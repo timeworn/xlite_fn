@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { selectIsLoggedIn } from 'src/store/selectors/user';
+import { selectIsLoggedIn } from 'store/selectors/user';
 
 const RouteWithLayout = props => {
   const { path, layout: Layout, component: Component, isAuth = true, ...rest } = props;

@@ -6,22 +6,25 @@ import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%'
+    height: '100%',
+    marginBottom: 8,
   },
   content: {
     borderLeftWidth: 4,
-    borderLeftStyle: 'solid'
+    borderLeftStyle: 'solid',
+    padding: 8,
+    paddingBottom: "8px !important"
   },
   title: {
     fontWeight: 700
   },
   avatar: {
-    height: 56,
-    width: 56
-  },
-  icon: {
     height: 32,
     width: 32
+  },
+  icon: {
+    height: 16,
+    width: 16
   },
   difference: {
     marginTop: theme.spacing(2),
@@ -48,7 +51,7 @@ const Summary = props => {
       className={clsx(classes.root, className)}
     >
       <CardContent className={classes.content} style={{ borderColor: color }}>
-        <Grid container justify="space-between">
+        <Grid container display="flex" justify="space-between" alignItems={"center"}>
           <Grid item>
             <Typography className={classes.title} style={{ color }} gutterBottom variant="body2">
               {title}

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, TextField } from '@material-ui/core';
-import { AuthService } from '/src/core/services/auth.service';
 import CustomizedSnackbars from '../../../../components/SnackbarWrapper/SnackbarWrapper';
+import { AuthService } from 'core/services/auth.service';
 
 const useStyles = makeStyles(() => ({
   root: {}

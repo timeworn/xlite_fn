@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     background: 'transparent'
   },
   title: {
-    color: 'white'
+    color: '#546e7a'
   }
 }));
 
@@ -53,7 +53,11 @@ const Topbar = props => {
       <Toolbar>
         <RouterLink to="/">
           <div className={classes.logo}>
-            <img alt="Logo" src="/images/logos/logo.png" className={classes.logoImg}/>
+            <img
+              alt="Logo"
+              className={classes.logoImg}
+              src="/images/logos/logo.png"
+            />
             <h1 className={classes.title}>Brand</h1>
           </div>
         </RouterLink>
@@ -70,7 +74,6 @@ const Topbar = props => {
           {/*</IconButton>*/}
           <IconButton
             className={classes.signOutButton}
-            color="inherit"
             onClick={() => {
               AuthService.instance.logout();
               dispatch(ActionSetLoginData(null));
@@ -81,10 +84,7 @@ const Topbar = props => {
           </IconButton>
         </Hidden>
         <Hidden lgUp>
-          <IconButton
-            color="inherit"
-            onClick={onSidebarOpen}
-          >
+          <IconButton onClick={onSidebarOpen}>
             <MenuIcon/>
           </IconButton>
         </Hidden>

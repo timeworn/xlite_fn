@@ -5,10 +5,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import CustomTextField from '../../../../components/CustomTextField/CustomTextField';
-import { selectedDevice } from '../../../../store/selectors/device';
+import { selectedDevice } from 'store/selectors/device';
 import useStoreState from '../../../../assets/js/use-store-state';
-import { setSelectedDevice, setSubmitted } from '../../../../store/actions/device';
-import { DevicesService } from '../../../../core/services/devices.service';
+import { setSelectedDevice, setSubmitted } from 'store/actions/device';
+import { DevicesService } from 'core/services/devices.service';
 import CustomizedSnackbars from '../../../../components/SnackbarWrapper/SnackbarWrapper';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,16 +16,19 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '0 0 0 1px rgba(63,63,68,0.05), 0 1px 3px 0 rgba(63,63,68,0.15)',
     width: '70%',
     padding: theme.spacing(1),
-    backgroundColor: 'white',
+    backgroundColor: '#212a37',
     borderRadius: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
       width: '100%'
+    },
+    '& .Mui-disabled': {
+      color: '#ffffff33'
     }
   },
   form: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '100%'
+      width: '100%',
     },
     padding: '8px 24px 8px 8px'
   },
@@ -76,12 +79,12 @@ const InfoEnterForm = () => {
     setDeviceInfo(deviceInfo);
     setBtnClicked(true);
     DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo)
-      .then(device => {
+      .then(() => {
         dispatch(setSubmitted(true));
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
       })
-      .catch(error => {
+      .catch(() => {
         setError(true);
         setTimeout(() => setError(false), 2000);
       });
@@ -90,46 +93,101 @@ const InfoEnterForm = () => {
 
   return (
     <div className={classes.root}>
-      <form className={classes.form} noValidate autoComplete="off">
+      <form
+        autoComplete="off"
+        className={classes.form}
+        noValidate
+      >
         <div>
-          <CustomTextField label="Name" type="string" submitted={btnClicked} value={deviceInfo.name}
-                           onChange={handleChange('name')}/>
-          <CustomTextField label="Manual Latitude" type="number" inputprops="0.0001" submitted={btnClicked}
-                           value={deviceInfo.latitude} onChange={handleChange('latitude')}/>
-          <CustomTextField label="Manual Longitude" type="number" inputprops="0.0001" submitted={btnClicked}
-                           value={deviceInfo.longitude} onChange={handleChange('longitude')}/>
+          <CustomTextField
+            label="Name"
+            onChange={handleChange('name')}
+            submitted={btnClicked}
+            type="string"
+            value={deviceInfo.name}
+          />
+          <CustomTextField
+            inputprops="0.0001"
+            label="Manual Latitude"
+            onChange={handleChange('latitude')}
+            submitted={btnClicked}
+            type="number"
+            value={deviceInfo.latitude}
+          />
+          <CustomTextField
+            inputprops="0.0001"
+            label="Manual Longitude"
+            onChange={handleChange('longitude')}
+            submitted={btnClicked}
+            type="number"
+            value={deviceInfo.longitude}
+          />
           <FormControlLabel
+            className={classes.Checkwarning}
             control={
               <Checkbox
                 checked={deviceInfo.enable_warning ? deviceInfo.enable_warning : false}
-                onChange={handleChange('enable_warning')}
                 color="primary"
+                onChange={handleChange('enable_warning')}
               />
             }
             label="Enable Warning"
-            className={classes.Checkwarning}
           />
-          <CustomTextField label="Temperature Low" type="number" inputprops="1" disabled={!deviceInfo.enable_warning}
-                           value={warnings.temp_low}
-                           submitted={btnClicked} onChange={handleChange('temp_low')}/>
-          <CustomTextField label="Temperature High" type="number" inputprops="1" disabled={!deviceInfo.enable_warning}
-                           value={warnings.temp_high}
-                           submitted={btnClicked} onChange={handleChange('temp_high')}/>
-          <CustomTextField label="Humidity Low" type="number" inputprops="1" disabled={!deviceInfo.enable_warning}
-                           value={warnings.humi_low}
-                           submitted={btnClicked} onChange={handleChange('humi_low')}/>
-          <CustomTextField label="Humidity High" type="number" inputprops="1" disabled={!deviceInfo.enable_warning}
-                           value={warnings.humi_high}
-                           submitted={btnClicked} onChange={handleChange('humi_high')}/>
-          <Button variant="contained" color="primary" className={classes.subBtn} disabled={btnClicked}
-                  onClick={handleClick}
+          <CustomTextField
+            disabled={!deviceInfo.enable_warning}
+            inputprops="1"
+            label="Temperature Low"
+            onChange={handleChange('temp_low')}
+            submitted={btnClicked}
+            type="number"
+            value={warnings.temp_low}
+          />
+          <CustomTextField
+            disabled={!deviceInfo.enable_warning}
+            inputprops="1"
+            label="Temperature High"
+            onChange={handleChange('temp_high')}
+            submitted={btnClicked}
+            type="number"
+            value={warnings.temp_high}
+          />
+          <CustomTextField
+            disabled={!deviceInfo.enable_warning}
+            inputprops="1"
+            label="Humidity Low"
+            onChange={handleChange('humi_low')}
+            submitted={btnClicked}
+            type="number"
+            value={warnings.humi_low}
+          />
+          <CustomTextField
+            disabled={!deviceInfo.enable_warning}
+            inputprops="1"
+            label="Humidity High"
+            onChange={handleChange('humi_high')}
+            submitted={btnClicked}
+            type="number"
+            value={warnings.humi_high}
+          />
+          <Button
+            className={classes.subBtn}
+            color="primary"
+            disabled={btnClicked}
+            onClick={handleClick}
+            variant="contained"
           >
             Submit
           </Button>
         </div>
       </form>
-      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!"/> : ''}
-      {error ? <CustomizedSnackbars variant="error" message="Failed"/> : ''}
+      {success ? <CustomizedSnackbars
+        message="Successfully updated!"
+        variant="success"
+      /> : ''}
+      {error ? <CustomizedSnackbars
+        message="Failed"
+        variant="error"
+      /> : ''}
     </div>
   );
 };

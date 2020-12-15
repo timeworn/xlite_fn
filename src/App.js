@@ -2,17 +2,17 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { Chart } from 'react-chartjs-2';
-import { ThemeProvider } from '@material-ui/core/styles';
+import Routes from './Routes';
 import validate from 'validate.js';
+import store from 'store';
 import dotenv from 'dotenv';
 import { chartjs } from './helpers';
 import theme from './theme';
+import { ThemeProvider } from '@material-ui/core/styles';
+import validators from './common/validators';
+import history from 'core/history/history';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import './assets/scss/index.scss';
-import validators from './common/validators';
-import Routes from './Routes';
-import history from 'core/history/history';
-import store from 'store';
 
 dotenv.config();
 

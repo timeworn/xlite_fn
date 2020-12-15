@@ -114,7 +114,7 @@ const DeviceEvents = props => {
       </CardContent>
       <Divider/>
       <CardActions className={classes.actions}>
-        <Button color="primary" size="small" variant="text">
+        <Button color="default" size="small" variant="text">
           View all <ArrowRightIcon/>
         </Button>
       </CardActions>

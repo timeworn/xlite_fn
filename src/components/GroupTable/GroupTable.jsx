@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Checkbox,
   Paper,
   Table,
   TableBody,
@@ -14,9 +14,10 @@ import {
   TableRow,
   TableSortLabel
 } from '@material-ui/core';
-import { setAllGroup, setSelectedGroup } from '../../store/actions/group';
+
+import { setAllGroup, setSelectedGroup } from 'store/actions/group';
+import { allGroup } from 'store/selectors/group';
 import useStoreState from '../../assets/js/use-store-state';
-import { allGroup } from '../../store/selectors/group';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

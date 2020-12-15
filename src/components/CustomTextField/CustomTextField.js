@@ -7,23 +7,24 @@ const CustomTextField = props => {
   const [testFocused, setTestFocused] = useState(false);
   return (
     <TextField
+      disabled={disabled}
+      color={'primary'}
       error={(testFocused || submitted) && value === '' && !disabled}
-      label={label}
-      type={type}
       InputLabelProps={{
         shrink: true
       }}
       inputProps={{ step: inputprops }}
-      variant="outlined"
-      value={value}
-      size="small"
-      disabled={disabled}
-      onFocus={() => {
-        setTestFocused(true);
-      }}
+      label={label}
       onChange={(e) => {
         onChange && onChange(e);
       }}
+      onFocus={() => {
+        setTestFocused(true);
+      }}
+      size="small"
+      type={type}
+      value={value}
+      variant="outlined"
     />
   );
 };

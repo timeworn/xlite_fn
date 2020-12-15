@@ -5,15 +5,18 @@ import { Assignment, AttachMoney, CalendarToday, Message } from '@material-ui/ic
 
 import { ConnectedDevice, DeviceEvents, Summary } from './components';
 import SectionHeader from '../../components/SectionHeader/SectionHeader';
-import PageHeader from '../../layouts/Main/components/PageHeader/PageHeader';
 import { DashboardService } from 'core/services/dashboard.service';
 import { DevicesService } from 'core/services/devices.service';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(4),
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(2)
+    },
+    '& .MuiPaper-elevation1': {
+      boxShadow: 'none !important'
     }
   }
 }));
@@ -65,7 +68,7 @@ const Dashboard = () => {
     Icon: Assignment,
     color: '#36b9cc'
   }, {
-    title: 'WARNING',
+    title: 'UNKNOWN',
     value: statis.warningDeviceCount,
     Icon: Message,
     color: '#f6c23e'
@@ -74,20 +77,28 @@ const Dashboard = () => {
   return (
     <div className={classes.root} id="screenshot">
       <Grid item lg={12} md={12} xl={12} xs={12}>
-        <PageHeader name="Dashboard"/>
+        <SectionHeader title="OVERVIEW"/>
       </Grid>
+      <Box display={"flex"} justifyContent={"center"} alignItems={"center"} mt={"-16px"}>
+        <Box width={'80%'}>
+          <Grid container spacing={4} direction="row" justify={"center"} alignItems={"center"}>
+            <Grid item md={6} xs={12}>
+              {data.map((item, key) =>
+                (<Grid item key={key} md={12} xs={12}>
+                  <Summary color={item.color} Icon={item.Icon} title={item.title} value={item.value} />
+                </Grid>)
+              )}
+            </Grid>
+            <Grid item lg={6} md={6} xl={6} xs={12}>
+              <ConnectedDevice statis={statis}/>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
       <Grid container spacing={4}>
-        {data.map((item, key) =>
-          (<Grid key={key} item lg={3} sm={6} xl={3} xs={12}>
-            <Summary title={item.title} value={item.value} Icon={item.Icon} color={item.color}/>
-          </Grid>)
-        )}
-        <Grid item lg={8} md={12} xl={9} xs={12}>
-          <SectionHeader title="Events"/>
+        <Grid item lg={12} md={12} xl={12} xs={12}>
+          <SectionHeader title="LATEST EVENTS"/>
           <DeviceEvents data={events}/>
-        </Grid>
-        <Grid item lg={4} md={6} xl={3} xs={12}>
-          <ConnectedDevice statis={statis}/>
         </Grid>
       </Grid>
     </div>

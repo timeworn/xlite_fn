@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: 'auto',
     marginBottom: theme.spacing(3),
+    background: 'transparent',
     '& .MuiCardHeader-action': {
       margin: 0
     },
@@ -38,7 +39,7 @@ const SectionHeader = props => {
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader title={
-        <div style={{ alignItems: 'center', display: 'flex' }}>
+        <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center', fontSize: 24 }}>
           <span>{title}</span>
           {optionInfo &&
           <Select

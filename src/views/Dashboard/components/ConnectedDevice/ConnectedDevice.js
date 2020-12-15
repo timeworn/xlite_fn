@@ -7,21 +7,19 @@ import {
   Card,
   CardHeader,
   CardContent,
-  IconButton,
-  Divider,
   Typography
 } from '@material-ui/core';
 import Wifi from '@material-ui/icons/Wifi';
-import RefreshIcon from '@material-ui/icons/Refresh';
 import WifiOff from '@material-ui/icons/WifiOff';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%'
+    height: '100%',
+    backgroundColor: 'transparent'
   },
   chartContainer: {
     position: 'relative',
-    height: '300px'
+    height: '210px'
   },
   stats: {
     marginTop: theme.spacing(2),
@@ -98,14 +96,7 @@ const ConnectedDevice = props => {
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader action={
-        <IconButton size="small">
-          <RefreshIcon/>
-        </IconButton>
-      }
-                  title="OverView"
-      />
-      <Divider/>
+      <CardHeader/>
       <CardContent>
         <div className={classes.chartContainer}>
           <Doughnut data={data} options={options}/>

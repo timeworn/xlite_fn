@@ -9,14 +9,14 @@ export default {
   primary: {
     contrastText: white,
     dark: colors.indigo[900],
-    main: colors.indigo[500],
+    main: '#222b3d',
     light: colors.indigo[100]
   },
   secondary: {
     contrastText: white,
-    dark: colors.blue[900],
-    main: colors.blue['A400'],
-    light: colors.blue['A400']
+    dark: '#4d84ff',
+    main: '#222b3d',
+    light: '#4d84ff'
   },
   success: {
     contrastText: white,
@@ -42,15 +42,19 @@ export default {
     main: colors.red[600],
     light: colors.red[400]
   },
+  checkbox: {
+    main: '#7b8087',
+    lightGreen: '#4d84ff'
+  },
   text: {
-    primary: colors.blueGrey[900],
-    secondary: colors.blueGrey[600],
-    link: colors.blue[600]
+    primary: colors.grey[50],
+    secondary: '#7b8087',
+    link: '#4d84ff'
   },
   background: {
-    default: '#F4F6F8',
-    paper: white
+    default: '#212a37',
+    paper: '#212a37'
   },
   icon: colors.blueGrey[600],
-  divider: colors.grey[200]
+  divider: '#212a37'
 };

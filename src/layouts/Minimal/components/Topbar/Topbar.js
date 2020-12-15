@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'none'
   },
   logo: {
-    display: "flex",
+    display: 'flex',
     alignItems: 'center'
   },
   logoImg: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     background: 'transparent'
   },
   title: {
-    color: 'white'
+    color: '#93949'
   }
 }));
 
@@ -39,7 +39,7 @@ const Topbar = props => {
       <Toolbar>
         <RouterLink to="/">
           <div className={classes.logo}>
-            <img alt="Logo" src="/images/logos/logo.png" className={classes.logoImg}/>
+            <img alt="Logo" src="/images/logos/logo.png" width="100px" />
             <h1 className={classes.title}>Brand</h1>
           </div>
         </RouterLink>
