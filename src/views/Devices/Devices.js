@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import PageHeader from '../../layouts/Main/components/PageHeader/PageHeader';
 import SelectionHeader from '../../components/SectionHeader/SectionHeader';
 import * as moment from 'moment';
 import { Grid } from '@material-ui/core';
 import ShelterMap from './components/MapContainer/MapContainer';
 import StatusChart from './components/StatusChart/StatusChart';
 import InfoEnterForm from './components/InfoEnterForm/InfoEnterFrom';
-import { GroupsService } from '../../core/services/groups.service';
+import { GroupsService } from 'core/services/groups.service';
 import EnhancedTable from '../../components/DeviceTable/EnhancedTable';
 import SelectRange from './components/SelectRange/SelectRange';
 import { apiUrl } from './data';
@@ -187,7 +186,7 @@ export default function Devices() {
     <div className={classes.root} id="screenshot">
       <Grid container spacing={4}>
         <Grid item md={12} xs={12}>
-          <SelectionHeader title='' opval={filterId} setOpval={setFilterId} optionInfo={allGroups}/>
+          <SelectionHeader title='' opval={filterId} setOpval={setFilterId} optionInfo={allGroups} align={'left'} />
           <EnhancedTable
             filterId={filterId}
             selectedSerial={filterDevice}

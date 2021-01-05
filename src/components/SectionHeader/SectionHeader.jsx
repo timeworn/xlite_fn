@@ -14,7 +14,13 @@ const useStyles = makeStyles((theme) => ({
       margin: 0
     },
     '& .MuiCardHeader-content': {
-      alignItems: 'center',
+      alignItems: 'center'
+    },
+    '& .MuiInput-underline:before': {
+      borderBottom: '1px solid white'
+    },
+    '& .MuiSelect-icon': {
+      color: 'white'
     }
   },
   selectEmpty: {
@@ -31,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SectionHeader = props => {
-  const { className, title, opval, setOpval, optionInfo, ...rest } = props;
+  const { className, title, opval, setOpval, optionInfo, align = 'center', ...rest } = props;
   const classes = useStyles();
 
   const handleChange = (event) => {
@@ -41,8 +47,8 @@ const SectionHeader = props => {
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader title={
-        <Box alignItems={'center'} display={'flex'} fontSize={'24px'} justifyContent={'center'}>
-          {title && <span>{title}</span> }
+        <Box alignItems={'center'} display={'flex'} fontSize={'24px'} justifyContent={align}>
+          {title && <span>{title}</span>}
           {optionInfo &&
           <Select
             value={opval}
@@ -71,7 +77,8 @@ SectionHeader.propTypes = {
   title: PropTypes.string.isRequired,
   optionInfo: PropTypes.object,
   opval: PropTypes.string,
-  setOpval: PropTypes.func
+  setOpval: PropTypes.func,
+  align: PropTypes.string
 };
 
 export default SectionHeader;
