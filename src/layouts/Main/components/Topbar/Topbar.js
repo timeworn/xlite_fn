@@ -14,7 +14,8 @@ import { ActionSetLoginData } from 'store/actions/user';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    boxShadow: 'none'
+    boxShadow: 'none',
+    background: '#272b34'
   },
   flexGrow: {
     flexGrow: 1

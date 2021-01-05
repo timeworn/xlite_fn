@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 
@@ -42,7 +43,6 @@ const useStyles = makeStyles(theme => ({
 
 const Summary = props => {
   const { className, Icon, title, value, color, ...rest } = props;
-
   const classes = useStyles();
 
   return (
@@ -53,10 +53,12 @@ const Summary = props => {
       <CardContent className={classes.content} style={{ borderColor: color }}>
         <Grid container display="flex" justify="space-between" alignItems={"center"}>
           <Grid item>
-            <Typography className={classes.title} style={{ color }} gutterBottom variant="body2">
-              {title}
-            </Typography>
-            <Typography variant="h3">{value}</Typography>
+            <Box ml={1}>
+              <Typography className={classes.title} style={{ color }} gutterBottom variant="body2">
+                {title}
+              </Typography>
+              <Typography variant="h3">{value}</Typography>
+            </Box>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar} style={{ backgroundColor: color}}>

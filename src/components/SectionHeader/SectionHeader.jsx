@@ -1,8 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
 import { Card, CardHeader, MenuItem, Select } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,14 +14,15 @@ const useStyles = makeStyles((theme) => ({
       margin: 0
     },
     '& .MuiCardHeader-content': {
-      alignItems: 'center'
+      alignItems: 'center',
     }
   },
   selectEmpty: {
-    marginLeft: theme.spacing(4),
-    backgroundColor: theme.palette.primary.light,
-    paddingLeft: theme.spacing(2),
+    marginLeft: 0,
+    backgroundColor: theme.palette.primary.blink,
+    paddingLeft: 10,
     fontWeight: 400,
+    fontSize: 14,
     borderRadius: 4,
     [theme.breakpoints.down('sm')]: {
       marginLeft: theme.spacing(1)
@@ -39,8 +41,8 @@ const SectionHeader = props => {
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader title={
-        <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center', fontSize: 24 }}>
-          <span>{title}</span>
+        <Box alignItems={'center'} display={'flex'} fontSize={'24px'} justifyContent={'center'}>
+          {title && <span>{title}</span> }
           {optionInfo &&
           <Select
             value={opval}
@@ -57,7 +59,7 @@ const SectionHeader = props => {
             )}
           </Select>
           }
-        </div>}
+        </Box>}
       >
       </CardHeader>
     </Card>

@@ -73,7 +73,6 @@ const DeviceEvents = props => {
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Device Data"/>
       <Divider/>
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -81,30 +80,36 @@ const DeviceEvents = props => {
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell>Device ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Group</TableCell>
+                  <TableCell>Event</TableCell>
+                  <TableCell>Updated</TableCell>
                   <TableCell sortDirection={direction} onClick={handleOrder}>
                     <Tooltip enterDelay={300} title="Sort">
                       <TableSortLabel active direction={direction}>
-                        Time
+                        Timestamp
                       </TableSortLabel>
                     </Tooltip>
                   </TableCell>
-                  <TableCell>Device</TableCell>
-                  <TableCell>Event</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {tableData.map(item => (
                   <TableRow hover key={item.id}>
-                    <TableCell>{moment(item.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
+                    <TableCell>{item.serial}</TableCell>
                     <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.group.name}</TableCell>
                     <TableCell>
                       <div className={classes.statusContainer}>
                         <StatusBullet className={classes.status}
-                                      color={statusColors[item.event.match(/[Temperature|Humidity|Battery] (\w+)/)[1]]}
-                                      size="sm"/>
+                          color={statusColors[item.event.match(/[Temperature|Humidity|Battery] (\w+)/)[1]]}
+                          size="sm"/>
                         {item.event}
                       </div>
                     </TableCell>
+                    <TableCell>5 minutes ago</TableCell>
+                    <TableCell>{moment(item.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

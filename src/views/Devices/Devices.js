@@ -185,18 +185,16 @@ export default function Devices() {
 
   return (
     <div className={classes.root} id="screenshot">
-      <PageHeader name="Devices"/>
       <Grid container spacing={4}>
-        <Grid item lg={6} md={6} xl={6} xs={12}>
-          <SelectionHeader title='Devices List' opval={filterId} setOpval={setFilterId} optionInfo={allGroups}/>
+        <Grid item md={12} xs={12}>
+          <SelectionHeader title='' opval={filterId} setOpval={setFilterId} optionInfo={allGroups}/>
           <EnhancedTable
             filterId={filterId}
             selectedSerial={filterDevice}
             setSelectedSerial={setFilterDevice}
           />
         </Grid>
-        <Grid item lg={6} md={6} xl={6} xs={12}>
-          <SelectionHeader title='Maps'/>
+        <Grid item md={12} xs={12}>
           <div className={classes.mapcontainer}>
             <ShelterMap data={historyData}/>
           </div>
