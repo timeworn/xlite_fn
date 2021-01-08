@@ -10,7 +10,10 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TableSortLabel
+  TableSortLabel,
+  Box,
+  Button,
+  Checkbox
 } from '@material-ui/core';
 import moment from 'moment';
 import { DevicesService } from 'core/services/devices.service';
@@ -58,7 +61,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort } = props;
+  const { classes, order, orderBy, numSelected, rowCount, onSelectAllClick, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -66,6 +69,14 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{ 'aria-label': 'select all desserts' }}
+          />
+        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -94,7 +105,9 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
+  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired
 };
@@ -161,6 +174,15 @@ export default function EnhancedTable(props) {
     dispatch(setSelectedDevice(row));
   };
 
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = data.map((n) => n.name);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -207,6 +229,9 @@ export default function EnhancedTable(props) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
+              numSelected={selected.length}
+              onSelectAllClick={handleSelectAllClick}
+              rowCount={data.length}
             />
             <TableBody>
               {stableSort(filteredData, getComparator(order, orderBy))
@@ -225,9 +250,15 @@ export default function EnhancedTable(props) {
                       key={row.name}
                       selected={isItemSelected}
                     >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={isItemSelected}
+                          inputProps={{ 'aria-labelledby': labelId }}
+                        />
+                      </TableCell>
                       <TableCell align="center">{row.serial}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.status}</TableCell>
+                      <TableCell align="center">{row.group.name}</TableCell>
                       {row.event === 'OK' ?
                         <TableCell align="center">{row.event}</TableCell> :
                         <TableCell align="center">
@@ -237,10 +268,9 @@ export default function EnhancedTable(props) {
                           </div>
                         </TableCell>
                       }
-                      <TableCell align="center">{row.temperature}</TableCell>
-                      <TableCell align="center">{row.humidity}</TableCell>
-                      <TableCell align="center">{parseFloat(row.latitude).toPrecision(7)}</TableCell>
-                      <TableCell align="center">{parseFloat(row.longitude).toPrecision(7)}</TableCell>
+                      <TableCell align="center">{row.current_dim}</TableCell>
+                      <TableCell align="center">{row.status}</TableCell>
+                      <TableCell align="center">{row.control_mode}</TableCell>
                       <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                     </TableRow>
                   );
@@ -258,6 +288,11 @@ export default function EnhancedTable(props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
+      <Box>
+        <Button variant="contained" color="secondary">
+          More details
+        </Button>
+      </Box>
     </div>
   );
 }
