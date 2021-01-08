@@ -2,6 +2,8 @@
   <dictionary name="truvil">
     <words>
       <w>checkwarning</w>
+      <w>lastupdated</w>
+      <w>mapcontainer</w>
       <w>statis</w>
     </words>
   </dictionary>

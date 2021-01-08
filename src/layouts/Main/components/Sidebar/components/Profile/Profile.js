@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -29,13 +29,17 @@ const Profile = props => {
   const { className, ...rest } = props;
 
   const [user, setUser] = useStoreState(currentUser, setCurrentUser);
+  const [avatarSrc, setAvatarSrc] = useState("");
 
   useEffect(() => {
     AuthService.instance.getProfile().then(user => setUser(user));
   }, []);
 
-  const avatarSrc = 'https://i.pravatar.cc/150?u=' + user.email;
   const classes = useStyles();
+
+  useEffect(() => {
+    setAvatarSrc('https://i.pravatar.cc/150?u=' + user.email);
+  }, [user.email])
 
   return (
     <div

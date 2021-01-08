@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(2)
     }
   },
-  mapcontainer: {
+  mapContainer: {
     position: 'relative',
     width: '100%',
     borderWidth: 10,
@@ -194,7 +194,7 @@ export default function Devices() {
           />
         </Grid>
         <Grid item md={12} xs={12}>
-          <div className={classes.mapcontainer}>
+          <div className={classes.mapContainer}>
             <ShelterMap data={historyData}/>
           </div>
         </Grid>

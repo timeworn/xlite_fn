@@ -27,6 +27,7 @@ const Dashboard = () => {
   const [devices, setDevices] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -51,6 +52,8 @@ const Dashboard = () => {
     };
     load();
   }, []);
+
+  console.log(events)
 
   const data = [{
     title: 'TOTAL DEVICES',

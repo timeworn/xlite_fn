@@ -64,14 +64,6 @@ const StatusBullet = props => {
 
 StatusBullet.propTypes = {
   className: PropTypes.string,
-  color: PropTypes.oneOf([
-    'neutral',
-    'primary',
-    'info',
-    'success',
-    'warning',
-    'danger'
-  ]),
   size: PropTypes.oneOf(['sm', 'md', 'lg'])
 };
 

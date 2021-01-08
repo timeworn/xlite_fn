@@ -13,10 +13,10 @@ import {
   TableSortLabel
 } from '@material-ui/core';
 import moment from 'moment';
-import { DevicesService } from '../../core/services/devices.service';
+import { DevicesService } from 'core/services/devices.service';
 import { useDispatch } from 'react-redux';
-import { setSelectedDevice, setSubmitted } from '../../store/actions/device';
-import { selectedDevice, submitted } from '../../store/selectors/device';
+import { setSelectedDevice, setSubmitted } from 'store/actions/device';
+import { selectedDevice, submitted } from 'store/selectors/device';
 import useStoreState from '../../assets/js/use-store-state';
 import { StatusBullet } from '../index';
 
@@ -47,14 +47,13 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'serial', numeric: true, disablePadding: false, label: 'Serial' },
+  { id: 'serial', numeric: true, disablePadding: false, label: 'Device ID' },
   { id: 'name', numeric: true, disablePadding: false, label: 'Name' },
-  { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
-  { id: 'event', numeric: true, disablePadding: false, label: 'Event' },
-  { id: 'temperature', numeric: true, disablePadding: false, label: 'Temp' },
-  { id: 'humidity', numeric: true, disablePadding: false, label: 'Humidity' },
-  { id: 'latitude', numeric: true, disablePadding: false, label: 'Latitude' },
-  { id: 'longitude', numeric: true, disablePadding: false, label: 'Longitude' },
+  { id: 'group', numeric: true, disablePadding: false, label: 'Group' },
+  { id: 'event', numeric: true, disablePadding: false, label: 'Status' },
+  { id: 'dim', numeric: true, disablePadding: false, label: 'Dim' },
+  { id: 'on/off', numeric: true, disablePadding: false, label: 'On/Off' },
+  { id: 'mode', numeric: true, disablePadding: false, label: 'Mode' },
   { id: 'lastupdated', numeric: true, disablePadding: false, label: 'Last updated' }
 ];
 
@@ -131,11 +130,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1)
   }
 }));
-
-const statusColors = {
-  Low: 'info',
-  High: 'danger'
-};
 
 export default function EnhancedTable(props) {
   const dispatch = useDispatch();
@@ -238,9 +232,7 @@ export default function EnhancedTable(props) {
                         <TableCell align="center">{row.event}</TableCell> :
                         <TableCell align="center">
                           <div className={classes.statusContainer}>
-                            <StatusBullet className={classes.status}
-                                          color={statusColors[row.event.match(/[Temperature|Humidity|Battery] (\w+)/)[1]]}
-                                          size="sm"/>
+                            <StatusBullet className={classes.status} size="sm"/>
                             {row.event}
                           </div>
                         </TableCell>

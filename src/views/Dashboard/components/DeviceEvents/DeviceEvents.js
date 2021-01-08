@@ -9,7 +9,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Divider,
   Table,
   TableBody,
@@ -42,11 +41,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end'
   }
 }));
-
-const statusColors = {
-  Low: 'info',
-  High: 'danger'
-};
 
 const DeviceEvents = props => {
   const { className, data, ...rest } = props;
@@ -102,9 +96,7 @@ const DeviceEvents = props => {
                     <TableCell>{item.group.name}</TableCell>
                     <TableCell>
                       <div className={classes.statusContainer}>
-                        <StatusBullet className={classes.status}
-                          color={statusColors[item.event.match(/[Temperature|Humidity|Battery] (\w+)/)[1]]}
-                          size="sm"/>
+                        <StatusBullet className={classes.status} size="sm"/>
                         {item.event}
                       </div>
                     </TableCell>
