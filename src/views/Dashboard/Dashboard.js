@@ -53,8 +53,6 @@ const Dashboard = () => {
     load();
   }, []);
 
-  console.log(events)
-
   const data = [{
     title: 'TOTAL DEVICES',
     value: statis.totalDeviceCount,

@@ -8,6 +8,7 @@ import {
   Account as AccountView,
   Dashboard as DashboardView,
   Devices as DevicesView,
+  DeviceDetail as DeviceDetailView,
   Groups as GroupsView,
   NotFound as NotFoundView,
   Reports as ReportsView,
@@ -36,6 +37,11 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/devices"
+      />
+      <RouteWithLayout
+        component={DeviceDetailView}
+        layout={MainLayout}
+        path="/devices/detail"
       />
       <RouteWithLayout
         component={GroupsView}

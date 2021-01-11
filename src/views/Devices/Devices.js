@@ -10,6 +10,9 @@ import { GroupsService } from 'core/services/groups.service';
 import EnhancedTable from '../../components/DeviceTable/EnhancedTable';
 import SelectRange from './components/SelectRange/SelectRange';
 import { apiUrl } from './data';
+import { DevicesService } from 'core/services/devices.service';
+import { setSelectedDevice } from 'store/actions/device';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,7 +67,11 @@ const histories =
 
 export default function Devices() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [groups, setGroups] = useState([]);
+  const [data, setData] = useState([]);
+
   const allGroups = {
     title: 'Filter by group',
     options: groups
@@ -179,6 +186,11 @@ export default function Devices() {
   };
 
   useEffect(() => {
+    DevicesService.instance.retrieveAll().then(devices => setData(devices));
+    dispatch(setSelectedDevice([]));
+  }, []);
+
+  useEffect(() => {
     GroupsService.instance.retrieveAll().then(groups => setGroups(groups));
   }, []);
 
@@ -188,6 +200,7 @@ export default function Devices() {
         <Grid item md={12} xs={12}>
           <SelectionHeader title='' opval={filterId} setOpval={setFilterId} optionInfo={allGroups} align={'left'} />
           <EnhancedTable
+            data={data}
             filterId={filterId}
             selectedSerial={filterDevice}
             setSelectedSerial={setFilterDevice}

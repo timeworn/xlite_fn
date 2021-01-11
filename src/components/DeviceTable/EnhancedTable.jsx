@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from "react-router";
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -16,7 +17,6 @@ import {
   Checkbox
 } from '@material-ui/core';
 import moment from 'moment';
-import { DevicesService } from 'core/services/devices.service';
 import { useDispatch } from 'react-redux';
 import { setSelectedDevice, setSubmitted } from 'store/actions/device';
 import { selectedDevice, submitted } from 'store/selectors/device';
@@ -74,7 +74,7 @@ function EnhancedTableHead(props) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
+            inputProps={{ 'aria-label': 'select all devices' }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -146,9 +146,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable(props) {
   const dispatch = useDispatch();
-  const { filterId, selectedSerial, setSelectedSerial } = props;
+  const history = useHistory();
+
+  const { data, filterId, selectedSerial, setSelectedSerial } = props;
   const classes = useStyles();
-  const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   const [order, setOrder] = React.useState('asc');
@@ -169,14 +170,14 @@ export default function EnhancedTable(props) {
   };
 
   const handleClick = (event, row) => {
-    setSelected(row.name);
+    setSelected(row.serial);
     setSelectedSerial(row.serial);
     dispatch(setSelectedDevice(row));
   };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.name);
+      const newSelecteds = data.map((n) => n.serial);
       setSelected(newSelecteds);
       return;
     }
@@ -186,11 +187,6 @@ export default function EnhancedTable(props) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
-  useEffect(() => {
-    DevicesService.instance.retrieveAll().then(devices => setData(devices));
-    dispatch(setSelectedDevice([]));
-  }, []);
 
   useEffect(() => {
     data.map(device => {
@@ -209,11 +205,17 @@ export default function EnhancedTable(props) {
     setPage(0);
   };
 
+  const handleDetail = () => {
+    console.log(selected);
+    console.log(selectedSerial)
+    history.push("/devices/detail/?id=" + selected);
+  };
+
   useEffect(() => {
     setFilteredData(data.filter(item => !filterId || (item.group !== null && item.group.name === filterId)));
   }, [filterId, data]);
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (serial) => selected.indexOf(serial) !== -1;
 
   return (
     <div className={classes.root}>
@@ -237,7 +239,7 @@ export default function EnhancedTable(props) {
               {stableSort(filteredData, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.serial);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -247,7 +249,7 @@ export default function EnhancedTable(props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.serial}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -289,7 +291,7 @@ export default function EnhancedTable(props) {
         />
       </Paper>
       <Box>
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" onClick={handleDetail}>
           More details
         </Button>
       </Box>
@@ -298,6 +300,7 @@ export default function EnhancedTable(props) {
 }
 
 EnhancedTable.propTypes = {
+  data: PropTypes.object.isRequired,
   filterId: PropTypes.string.isRequired,
   selectedSerial: PropTypes.string,
   setSelectedSerial: PropTypes.func
