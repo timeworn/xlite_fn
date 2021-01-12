@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-import DeviceDetailTitle from 'views/DeviceDetail/components/DeviceDetailTitle/DeviceDetailTitle';
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+
+import RefreshIcon from '@material-ui/icons/Refresh';
+
 import { DevicesService } from 'core/services/devices.service';
+import DeviceDetailTitle from 'views/DeviceDetail/components/DeviceDetailTitle/DeviceDetailTitle';
+import DeviceEnvironment from 'views/DeviceDetail/components/DeviceEnvironment/DeviceEnvironment';
+import { setSelectedDevice } from 'store/actions/device';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,8 +33,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function DeviceDetail() {
+export default function DeviceDetail () {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [allDevices, setAllDevices] = useState([]);
   const [detailInfo, setDetailInfo] = useState([]);
 
@@ -34,6 +44,10 @@ export default function DeviceDetail() {
   const paramsString = window.location.search;
   const params = new URLSearchParams(paramsString);
   const deviceId = params.get('id');
+
+  const handleRefresh = () => {
+    DevicesService.instance.retrieveAll().then(devices => setAllDevices(devices));
+  };
 
   useEffect(() => {
     DevicesService.instance.retrieveAll().then(devices => setAllDevices(devices));
@@ -43,16 +57,25 @@ export default function DeviceDetail() {
     setDetailInfo(allDevices.filter(device => device.serial === deviceId));
   }, [allDevices]);
 
+  useEffect(() => {
+    dispatch(setSelectedDevice(detailInfo[0]));
+  }, [detailInfo]);
+
   return (
     <div className={classes.root} id="device-detail">
       <Grid container spacing={4}>
         <Grid item md={12} xs={12}>
-          {detailInfo.length ? <DeviceDetailTitle title={detailInfo[0].name} serial={detailInfo[0].serial}/> : "" }
+          {detailInfo.length ? <DeviceDetailTitle title={detailInfo[0].name} serial={detailInfo[0].serial} /> : ''}
         </Grid>
         <Grid item md={8} xs={12}>
         </Grid>
         <Grid item md={4} xs={12}>
-          dfsfasd
+          <Box display={'flex'} justifyContent={'flex-end'} color="primary">
+            <IconButton size="small" aria-label="close" onClick={handleRefresh}>
+              <RefreshIcon fontSize="large" />
+            </IconButton>
+          </Box>
+          <DeviceEnvironment />
         </Grid>
       </Grid>
     </div>

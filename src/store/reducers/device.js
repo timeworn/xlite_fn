@@ -3,6 +3,11 @@ import { DeviceActionTypes } from 'store/actions/device';
 const initState = {
   selectedDevice: {
     battery: '',
+    control_mode: '',
+    current_dim: '',
+    light_sensor: '',
+    manual_control: '',
+    power: 0,
     event: '',
     gps_fix: 0,
     group: {

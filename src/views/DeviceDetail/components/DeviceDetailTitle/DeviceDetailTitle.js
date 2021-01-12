@@ -9,7 +9,6 @@ export default function DeviceDetailTitle (props) {
   const history = useHistory();
   const { title = "", serial = "" } = props;
 
-  console.log(title);
   return (
     <Box width={"100%"} display={"flex"} justifyContent={"center"} alignItems={"center"} color={"white"} position={"relative"} fontSize={"20px"}>
       <Box>
