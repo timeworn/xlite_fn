@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@material-ui/core/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Input, MenuItem, Select, Slider, TextField } from '@material-ui/core';
@@ -23,7 +23,6 @@ export default function DeviceEnvironment () {
   const deviceInfo = useSelector(selectedDevice);
   const dispatch = useDispatch();
   const classes = useStyle();
-  const [value, setValue] = useState(30);
 
   const handleChange = (e) => {
     dispatch(setSelectedDevice({
@@ -40,18 +39,30 @@ export default function DeviceEnvironment () {
   };
 
   const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+    dispatch(setSelectedDevice({
+      ...deviceInfo,
+      [event.target.name]: newValue
+    }));
   };
 
   const handleInputChange = (event) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
+    dispatch(setSelectedDevice({
+      ...deviceInfo,
+      [event.target.value]: event.target.value === '' ? '' : Number(event.target.value)
+    }));
   };
 
   const handleBlur = () => {
-    if (value < 0) {
-      setValue(0);
-    } else if (value > 100) {
-      setValue(100);
+    if (deviceInfo.current_dim < 0) {
+      dispatch(setSelectedDevice({
+        ...deviceInfo,
+        current_dim: 0
+      }));
+    } else if (deviceInfo.current_dim > 100) {
+      dispatch(setSelectedDevice({
+        ...deviceInfo,
+        current_dim: 100
+      }));
     }
   };
 
@@ -102,17 +113,22 @@ export default function DeviceEnvironment () {
           <Grid item>
             Dim
           </Grid>
+          {deviceInfo &&
           <Grid item xs>
             <Slider
-              value={typeof value === 'number' ? value : 0}
+              value={typeof deviceInfo.current_dim === 'number' ? deviceInfo.current_dim : 0}
+              name="current_dim"
               onChange={handleSliderChange}
               aria-labelledby="input-slider"
             />
           </Grid>
+          }
+          {deviceInfo &&
           <Grid item>
             <Input
               className={classes.input}
-              value={value}
+              value={deviceInfo.current_dim}
+              name="current_dim"
               margin="dense"
               onChange={handleInputChange}
               onBlur={handleBlur}
@@ -125,6 +141,7 @@ export default function DeviceEnvironment () {
               }}
             />
           </Grid>
+          }
         </Grid>
       </Box>
     </Box>
