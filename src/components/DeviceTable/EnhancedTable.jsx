@@ -206,8 +206,6 @@ export default function EnhancedTable(props) {
   };
 
   const handleDetail = () => {
-    console.log(selected);
-    console.log(selectedSerial)
     history.push("/devices/detail/?id=" + selected);
   };
 
@@ -300,7 +298,7 @@ export default function EnhancedTable(props) {
 }
 
 EnhancedTable.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
   filterId: PropTypes.string.isRequired,
   selectedSerial: PropTypes.string,
   setSelectedSerial: PropTypes.func

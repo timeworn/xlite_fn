@@ -1,1 +1,1 @@
-export { default } from './DeviceDetail';
+export { default } from 'views/DeviceDetail/DeviceDetail';
