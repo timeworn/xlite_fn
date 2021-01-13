@@ -8,9 +8,10 @@ import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 import { DevicesService } from 'core/services/devices.service';
+import { setSelectedDevice } from 'store/actions/device';
 import DeviceDetailTitle from 'views/DeviceDetail/components/DeviceDetailTitle/DeviceDetailTitle';
 import DeviceEnvironment from 'views/DeviceDetail/components/DeviceEnvironment/DeviceEnvironment';
-import { setSelectedDevice } from 'store/actions/device';
+import DevicePosition from 'views/DeviceDetail/components/DevicePosition/DevicePosition';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,6 +77,7 @@ export default function DeviceDetail () {
             </IconButton>
           </Box>
           <DeviceEnvironment />
+          <DevicePosition />
         </Grid>
       </Grid>
     </div>

@@ -1,21 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from "react-router";
+import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Box,
-  Button,
-  Checkbox
-} from '@material-ui/core';
+import { Box, Button, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { setSelectedDevice, setSubmitted } from 'store/actions/device';
@@ -23,7 +10,7 @@ import { selectedDevice, submitted } from 'store/selectors/device';
 import useStoreState from '../../assets/js/use-store-state';
 import { StatusBullet } from '../index';
 
-function descendingComparator(a, b, orderBy) {
+function descendingComparator (a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -33,13 +20,13 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
-function getComparator(order, orderBy) {
+function getComparator (order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort(array, comparator) {
+function stableSort (array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -60,7 +47,7 @@ const headCells = [
   { id: 'lastupdated', numeric: true, disablePadding: false, label: 'Last updated' }
 ];
 
-function EnhancedTableHead(props) {
+function EnhancedTableHead (props) {
   const { classes, order, orderBy, numSelected, rowCount, onSelectAllClick, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -144,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function EnhancedTable(props) {
+export default function EnhancedTable (props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -206,7 +193,7 @@ export default function EnhancedTable(props) {
   };
 
   const handleDetail = () => {
-    history.push("/devices/detail/?id=" + selected);
+    history.push('/devices/detail/?id=' + selected);
   };
 
   useEffect(() => {
@@ -263,7 +250,7 @@ export default function EnhancedTable(props) {
                         <TableCell align="center">{row.event}</TableCell> :
                         <TableCell align="center">
                           <div className={classes.statusContainer}>
-                            <StatusBullet className={classes.status} size="sm"/>
+                            <StatusBullet className={classes.status} size="sm" />
                             {row.event}
                           </div>
                         </TableCell>
