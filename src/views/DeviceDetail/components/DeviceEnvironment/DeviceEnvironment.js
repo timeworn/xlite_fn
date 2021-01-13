@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Input, MenuItem, Select, Slider, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { selectedDevice } from 'store/selectors/device';
 import { setSelectedDevice } from 'store/actions/device';
+import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button';
+import { DevicesService } from 'core/services/devices.service';
 
 const control_mode = ['MANUAL', 'AUTO', 'SCHEDULED'];
 
 const useStyle = makeStyles((theme) => ({
+  root: {
+    background: '#30373E',
+    '& .MuiSlider-root': {
+      color: '#4284ff'
+    },
+    '& .MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track': {
+      backgroundColor: '#4284ff'
+    },
+    '& .Mui-checked': {
+      color: '#4284ff'
+    }
+  },
   selectEmpty: {
     width: '80%',
     height: '40px',
@@ -22,7 +37,13 @@ const useStyle = makeStyles((theme) => ({
 export default function DeviceEnvironment () {
   const deviceInfo = useSelector(selectedDevice);
   const dispatch = useDispatch();
+  const [statusValue, setStatusValue] = useState(false);
+
   const classes = useStyle();
+
+  useEffect(() => {
+    deviceInfo && setStatusValue(deviceInfo.status === 'ONLINE');
+  }, [deviceInfo]);
 
   const handleChange = (e) => {
     dispatch(setSelectedDevice({
@@ -38,17 +59,17 @@ export default function DeviceEnvironment () {
     }));
   };
 
-  const handleSliderChange = (event, newValue) => {
+  const handleSliderChange = (e, newValue) => {
     dispatch(setSelectedDevice({
       ...deviceInfo,
-      [event.target.name]: newValue
+      current_dim: newValue
     }));
   };
 
   const handleInputChange = (event) => {
     dispatch(setSelectedDevice({
       ...deviceInfo,
-      [event.target.value]: event.target.value === '' ? '' : Number(event.target.value)
+      [event.target.name]: event.target.value === '' ? '' : Number(event.target.value)
     }));
   };
 
@@ -66,10 +87,21 @@ export default function DeviceEnvironment () {
     }
   };
 
-  console.log(deviceInfo);
+  const handleOnOffChange = (event) => {
+    dispatch(setSelectedDevice({ ...deviceInfo, [event.target.name]: event.target.checked ? 'ONLINE' : 'OFFLINE' }));
+  };
+
+  const handleSaveInfo = () => {
+    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(info => console.log(info))
+      .catch(error => console.log(error));
+  }
+
+  const handleCancelInfo = () => {
+    return false;
+  }
 
   return (
-    <Box border={'1px solid white'} margin={'10px'} padding={'10px'}>
+    <Box border={'1px solid #afadad'} margin={'10px'} padding={'10px'} className={classes.root}>
       <Box color={'white'}>
         <Box component={'span'}>Device Details - ID: </Box>
         {deviceInfo && <Box component={'span'}>{deviceInfo.serial}</Box>}
@@ -93,7 +125,6 @@ export default function DeviceEnvironment () {
       <Box>
         {deviceInfo &&
         <Select
-          fullwidth
           displayEmpty
           className={classes.selectEmpty}
           name="control_mode"
@@ -116,10 +147,11 @@ export default function DeviceEnvironment () {
           {deviceInfo &&
           <Grid item xs>
             <Slider
-              value={typeof deviceInfo.current_dim === 'number' ? deviceInfo.current_dim : 0}
               name="current_dim"
               onChange={handleSliderChange}
               aria-labelledby="input-slider"
+              color="secondary"
+              value={typeof deviceInfo.current_dim === 'number' ? deviceInfo.current_dim : 0}
             />
           </Grid>
           }
@@ -143,6 +175,39 @@ export default function DeviceEnvironment () {
           </Grid>
           }
         </Grid>
+      </Box>
+      <Box color={'white'}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            On/Off
+          </Grid>
+          <Grid item>
+            {deviceInfo &&
+            <Switch
+              checked={statusValue}
+              onChange={handleOnOffChange}
+              name="status"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+            }
+          </Grid>
+        </Grid>
+      </Box>
+      <Box mt={"30px"} display={"flex"} justifyContent={"space-between"}>
+        <Button
+          color="primary"
+          onClick={handleSaveInfo}
+          variant="contained"
+        >
+          Confirm
+        </Button>
+        <Button
+          color="primary"
+          onClick={handleCancelInfo}
+          variant="contained"
+        >
+          Cancel
+        </Button>
       </Box>
     </Box>
   );

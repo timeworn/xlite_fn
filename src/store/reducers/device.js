@@ -2,20 +2,17 @@ import { DeviceActionTypes } from 'store/actions/device';
 
 const initState = {
   selectedDevice: {
-    battery: '',
     control_mode: '',
     current_dim: '',
     light_sensor: '',
     manual_control: '',
     power: 0,
     event: '',
-    gps_fix: 0,
     group: {
       id: 0,
       name: '',
       note: ''
     },
-    humidity: '',
     id: 0,
     last_connected: '',
     latitude: '',
@@ -23,7 +20,6 @@ const initState = {
     name: '',
     serial: '',
     settings: '',
-    enable_warning: false,
     status: '',
     temperature: '',
     type: ''
