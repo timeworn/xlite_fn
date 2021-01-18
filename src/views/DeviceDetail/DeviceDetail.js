@@ -4,15 +4,14 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
-
 import RefreshIcon from '@material-ui/icons/Refresh';
-
 import { DevicesService } from 'core/services/devices.service';
 import { setSelectedDevice } from 'store/actions/device';
 import DeviceDetailTitle from 'views/DeviceDetail/components/DeviceDetailTitle/DeviceDetailTitle';
 import DeviceEnvironment from 'views/DeviceDetail/components/DeviceEnvironment/DeviceEnvironment';
 import DevicePosition from 'views/DeviceDetail/components/DevicePosition/DevicePosition';
 import DeviceHistory from 'views/DeviceHistory/DeviceHistory';
+import ShelterMap from 'views/Devices/components/MapContainer/MapContainer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,6 +21,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   mapContainer: {
+    marginTop: '30px',
     position: 'relative',
     width: '100%',
     borderWidth: 10,
@@ -71,7 +71,10 @@ export default function DeviceDetail () {
           {detailInfo.length ? <DeviceDetailTitle title={detailInfo[0].name} serial={detailInfo[0].serial} /> : ''}
         </Grid>
         <Grid item md={8} xs={12}>
-          <DeviceHistory serial={deviceId}/>
+          <DeviceHistory serial={deviceId} />
+          {detailInfo && <div className={classes.mapContainer}>
+            <ShelterMap data={detailInfo} />
+          </div>}
         </Grid>
         <Grid item md={4} xs={12}>
           <Box display={'flex'} justifyContent={'flex-end'} color="primary">

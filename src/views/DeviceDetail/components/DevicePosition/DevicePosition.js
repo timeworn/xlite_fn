@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectedDevice } from 'store/selectors/device';
+import { currentPos, selectedDevice } from 'store/selectors/device';
 import { DevicesService } from 'core/services/devices.service';
 import { setSelectedDevice } from 'store/actions/device';
 import { makeStyles } from '@material-ui/styles';
@@ -25,6 +25,17 @@ export default function DevicePosition () {
   const dispatch = useDispatch();
   const classes = useStyle();
   const deviceInfo = useSelector(selectedDevice);
+  const curPos = useSelector(currentPos);
+
+  useEffect(() => {
+    if (curPos.lat !== null) {
+      dispatch(setSelectedDevice({
+        ...deviceInfo,
+        latitude: curPos.lat,
+        longitude: curPos.lng
+      }));
+    }
+  }, [curPos]);
 
   const handleChange = (event) => {
     dispatch(setSelectedDevice({

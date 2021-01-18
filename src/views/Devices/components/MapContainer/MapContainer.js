@@ -1,52 +1,60 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
+import Box from '@material-ui/core/Box';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
+import { setCurrentPos } from 'store/actions/device';
 
 const icon = {
   url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'
 };
 
-const icon1 = {
-  url: 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png'
-};
+export function transform (position) {
+  return Math.round(position * 100000) / 100000;
+}
 
 const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
+  const dispatch = useDispatch();
   const [lastPos, setLastPos] = useState({
-    lat: 10.766048,
-    lng: 106.627815
+    lat: -33.921,
+    lng: 151.209
+  });
+  const [curPos, setCurPos] = useState({
+    lat: null,
+    lng: null
   });
 
   useEffect(() => {
-    if (props.markers.length) {
-      setLastPos({
-        lat: props.markers[props.markers.length - 1].location.lat,
-        lng: props.markers[props.markers.length - 1].location.lon
-      });
-    }
-  }, [props.markers]);
+    dispatch(setCurrentPos(curPos));
+  }, [curPos]);
 
   return (
-    <GoogleMap defaultZoom={8} defaultCenter={{
-      lat: 10.766048,
-      lng: 106.627815
-    }} center={lastPos}>
+    <GoogleMap defaultZoom={8} center={lastPos} onClick={e => setCurPos({
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng()
+    })}>
       {props.markers.map((marker, key) => {
         const onMouseOver = props.onMouseOver.bind(this, marker);
         return (
           <Marker
             key={key}
             onMouseOver={onMouseOver}
-            position={{ lat: marker.location.lat, lng: marker.location.lon }}
-            icon={props.markers.length - 1 === key ? icon.url : icon1.url}
+            position={{ lat: transform(marker.latitude), lng: transform(marker.longitude) }}
+            icon={icon.url}
           >
             {props.selectedMarker === marker &&
             <InfoWindow>
-              <div>
-                {props.markers.length - 1 === key ? 'last position:' : ''}
-                {marker.timestamp},Temperature:
-                {marker.sensor.temperature}
-              </div>
+              <ul>
+                <li><Box fontWeight={'bold'} component={'span'}>Device ID: </Box>{marker.serial}</li>
+                <li><Box fontWeight={'bold'} component={'span'}>Name: </Box>{marker.name}</li>
+                {marker.group ? <li><Box fontWeight={'bold'} component={'span'}>Group: </Box>{marker.group.name}</li> : ''}
+                <li><Box fontWeight={'bold'} component={'span'}>Status: </Box>{marker.event}</li>
+                <li><Box fontWeight={'bold'} component={'span'}>Dim: </Box>{marker.current_dim}</li>
+                <li><Box fontWeight={'bold'} component={'span'}>On/Off: </Box>{marker.status}</li>
+                <li><Box fontWeight={'bold'} component={'span'}>Mode: </Box>{marker.control_mode}</li>
+                <li><Box fontWeight={'bold'} component={'span'} mb={'5px'}>Updated: </Box>{marker.last_connected}</li>
+              </ul>
             </InfoWindow>}
           </Marker>
         );
@@ -55,7 +63,7 @@ const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
   );
 });
 
-export default function ShelterMap(props) {
+export default function ShelterMap (props) {
   const { data } = props;
   const [selectedMarker, setSelectedMarker] = useState('');
   const handleOver = (marker, event) => {
@@ -67,9 +75,9 @@ export default function ShelterMap(props) {
       markers={data}
       onMouseOver={handleOver}
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdcyKvWUXhZCh8IiO6oZtIWPhtNtXJ6iA&v=3.exp&libraries=geometry,drawing,places"
-      loadingElement={<div style={{ height: `100%` }}/>}
-      containerElement={<div style={{ height: `400px` }}/>}
-      mapElement={<div style={{ height: `100%` }}/>}
+      loadingElement={<div style={{ height: `100%` }} />}
+      containerElement={<div style={{ height: `400px` }} />}
+      mapElement={<div style={{ height: `100%` }} />}
     />
   );
 }

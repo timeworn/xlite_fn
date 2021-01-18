@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
 import Box from '@material-ui/core/Box';
 import SectionHeader from 'components/SectionHeader/SectionHeader';
 import { apiUrl } from 'views/Devices/data';
@@ -122,7 +121,6 @@ export default function DeviceHistory (props) {
     </Box>
   );
 }
-
 
 DeviceHistory.propTypes = {
   serial: PropTypes.string.isRequired

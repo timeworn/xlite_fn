@@ -11,7 +11,10 @@ const initState = {
     group: {
       id: 0,
       name: '',
-      note: ''
+      note: '',
+      createdAt: '',
+      deletedAt: '',
+      updatedAt: ''
     },
     id: 0,
     last_connected: '',
@@ -25,6 +28,7 @@ const initState = {
     type: ''
   },
   historyData: [],
+  currentPos: {},
   submitted: false
 };
 
@@ -33,9 +37,11 @@ export default (state = initState, action) => {
     case DeviceActionTypes.SET_SELECTEDDEVICE_INFO:
       return { ...state, selectedDevice: action.device };
     case DeviceActionTypes.SET_SUBMITTED:
-      return { ...state, submitted: action.device};
+      return { ...state, submitted: action.device };
     case DeviceActionTypes.SET_DEVICEHISTORY:
-        return { ...state, deviceHistory: action.device}
+      return { ...state, deviceHistory: action.device };
+    case DeviceActionTypes.SET_CURRENTPOS:
+      return { ...state, currentPos: action.device };
     default:
       return state;
   }
