@@ -12,6 +12,7 @@ import { setSelectedDevice } from 'store/actions/device';
 import DeviceDetailTitle from 'views/DeviceDetail/components/DeviceDetailTitle/DeviceDetailTitle';
 import DeviceEnvironment from 'views/DeviceDetail/components/DeviceEnvironment/DeviceEnvironment';
 import DevicePosition from 'views/DeviceDetail/components/DevicePosition/DevicePosition';
+import DeviceHistory from 'views/DeviceHistory/DeviceHistory';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,6 +47,7 @@ export default function DeviceDetail () {
   const params = new URLSearchParams(paramsString);
   const deviceId = params.get('id');
 
+
   const handleRefresh = () => {
     DevicesService.instance.retrieveAll().then(devices => setAllDevices(devices));
   };
@@ -69,6 +71,7 @@ export default function DeviceDetail () {
           {detailInfo.length ? <DeviceDetailTitle title={detailInfo[0].name} serial={detailInfo[0].serial} /> : ''}
         </Grid>
         <Grid item md={8} xs={12}>
+          <DeviceHistory serial={deviceId}/>
         </Grid>
         <Grid item md={4} xs={12}>
           <Box display={'flex'} justifyContent={'flex-end'} color="primary">

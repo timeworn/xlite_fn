@@ -2,6 +2,7 @@
   <dictionary name="truvil">
     <words>
       <w>checkwarning</w>
+      <w>devicehistory</w>
       <w>lastupdated</w>
       <w>mapcontainer</w>
       <w>selecteddevice</w>

@@ -24,6 +24,7 @@ const initState = {
     temperature: '',
     type: ''
   },
+  historyData: [],
   submitted: false
 };
 
@@ -33,6 +34,8 @@ export default (state = initState, action) => {
       return { ...state, selectedDevice: action.device };
     case DeviceActionTypes.SET_SUBMITTED:
       return { ...state, submitted: action.device};
+    case DeviceActionTypes.SET_DEVICEHISTORY:
+        return { ...state, deviceHistory: action.device}
     default:
       return state;
   }
