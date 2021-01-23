@@ -1,13 +1,16 @@
 <component name="ProjectDictionaryState">
   <dictionary name="truvil">
     <words>
+      <w>axios</w>
       <w>checkwarning</w>
       <w>currentpos</w>
       <w>devicehistory</w>
       <w>lastupdated</w>
       <w>mapcontainer</w>
+      <w>sche</w>
       <w>selecteddevice</w>
       <w>selecteds</w>
+      <w>selectedschedule</w>
       <w>statis</w>
       <w>termperature</w>
     </words>

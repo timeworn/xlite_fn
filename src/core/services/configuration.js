@@ -9,6 +9,7 @@ class Configuration {
   EVENTS_URL = `${process.env.REACT_APP_API_URL}/dashboard/events`;
   GROUPS_URL = `${process.env.REACT_APP_API_URL}/groups`;
   CREATE_GROUP_URL = `${process.env.REACT_APP_API_URL}/groups/create`;
+  SCHEDULES_URL = `${process.env.REACT_APP_API_URL}/schedules`;
 
   static instance = new Configuration();
 }

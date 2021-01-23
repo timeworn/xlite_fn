@@ -3,23 +3,13 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel
-} from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
 
 import { setAllGroup, setSelectedGroup } from 'store/actions/group';
 import { allGroup } from 'store/selectors/group';
 import useStoreState from '../../assets/js/use-store-state';
 
-function descendingComparator(a, b, orderBy) {
+function descendingComparator (a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -29,13 +19,13 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
-function getComparator(order, orderBy) {
+function getComparator (order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort(array, comparator) {
+function stableSort (array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -51,7 +41,7 @@ const headCells = [
   { id: 'note', numeric: true, disablePadding: false, label: 'Note' }
 ];
 
-function GroupTableHead(props) {
+function GroupTableHead (props) {
   const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -63,7 +53,7 @@ function GroupTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -118,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function GroupTable() {
+export default function GroupTable () {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [order, setOrder] = React.useState('asc');

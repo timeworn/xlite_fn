@@ -18,7 +18,9 @@ import CustomizedSnackbars from '../../../../components/SnackbarWrapper/Snackbar
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(1)
+    padding: theme.spacing(2),
+    backgroundColor: '#222b3d !important',
+    borderRadius: 4
   },
   groupName: {
     display: 'flex',
@@ -86,7 +88,7 @@ const GroupDetail = () => {
   //   }));
   // }, [selected, unGroupDevices]);
 
-  function handleDelete(device) {
+  function handleDelete (device) {
     const remainSelectedDevices = selectedDevices.filter(item => item.name !== device.name);
 
     setSelectedDevices(remainSelectedDevices);
@@ -185,8 +187,8 @@ const GroupDetail = () => {
             Name
           </Typography>
           <TextField name="name" variant='outlined' size="small" className={classes.groupText}
-                     onChange={handleTextChange}
-                     value={selected.name}/>
+            onChange={handleTextChange}
+            value={selected.name} />
         </div>
         <Button variant="contained" color="primary" className={classes.groupDelBtn} onClick={handleGroupDelete}>
           Delete This Group
@@ -197,8 +199,8 @@ const GroupDetail = () => {
           Note
         </Typography>
         <TextField name="note" variant='outlined' size="small" fullWidth className={classes.noteText}
-                   onChange={handleTextChange}
-                   value={selected.note}/>
+          onChange={handleTextChange}
+          value={selected.note} />
       </div>
       <Grid container spacing={4}>
         <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -210,10 +212,10 @@ const GroupDetail = () => {
               const labelId = `checkbox-list-label-${key}`;
               return (
                 <ListItem key={key} role={undefined} dense button>
-                  <ListItemText id={labelId} primary={item.name}/>
+                  <ListItemText id={labelId} primary={item.name} />
                   <ListItemSecondaryAction>
                     <IconButton className="delIcon" aria-label="delete" onClick={() => handleDelete(item)}>
-                      <DeleteIcon color="primary"/>
+                      <DeleteIcon color="primary" />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -246,9 +248,9 @@ const GroupDetail = () => {
           </div>
         </Grid>
       </Grid>
-      {deleted ? <CustomizedSnackbars variant="success" message="Successfully updated!"/> : ''}
-      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!"/> : ''}
-      {error ? <CustomizedSnackbars variant="error" message="Failed"/> : ''}
+      {deleted ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </div>
   );
 };

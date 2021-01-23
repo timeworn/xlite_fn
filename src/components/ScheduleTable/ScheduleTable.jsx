@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
+import { Box, Button, Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
-import { setSelectedDevice, setSubmitted } from 'store/actions/device';
-import { selectedDevice, submitted } from 'store/selectors/device';
-import useStoreState from '../../assets/js/use-store-state';
-import { StatusBullet } from '../index';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import { getComparator, stableSort } from 'common/util';
+import { setSelectedSchedule } from 'store/actions/schedule';
+
 
 const headCells = [
-  { id: 'serial', numeric: true, disablePadding: false, label: 'Device ID' },
+  { id: 'id', numeric: true, disablePadding: false, label: 'Schedule ID' },
   { id: 'name', numeric: true, disablePadding: false, label: 'Name' },
   { id: 'group', numeric: true, disablePadding: false, label: 'Group' },
-  { id: 'event', numeric: true, disablePadding: false, label: 'Status' },
-  { id: 'dim', numeric: true, disablePadding: false, label: 'Dim' },
-  { id: 'on/off', numeric: true, disablePadding: false, label: 'On/Off' },
-  { id: 'mode', numeric: true, disablePadding: false, label: 'Mode' },
-  { id: 'lastupdated', numeric: true, disablePadding: false, label: 'Last updated' }
+  { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
+  { id: 'lastupdated', numeric: true, disablePadding: false, label: 'Last updated' },
+  { id: 'action', numeric: true, disablePadding: false, label: 'Action' }
 ];
 
-function EnhancedTableHead (props) {
+function ScheduleTableHead (props) {
   const { classes, order, orderBy, numSelected, rowCount, onSelectAllClick, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -36,7 +34,7 @@ function EnhancedTableHead (props) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all devices' }}
+            inputProps={{ 'aria-label': 'select all schedules' }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -65,7 +63,7 @@ function EnhancedTableHead (props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
+ScheduleTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
@@ -106,24 +104,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function EnhancedTable (props) {
+export default function ScheduleTable (props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { data, filterId, selectedSerial, setSelectedSerial } = props;
   const classes = useStyles();
-  const [filteredData, setFilteredData] = useState([]);
+  const { data, filterId } = props;
 
-  const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
+  const [order, setOrder] = React.useState('asc');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  //update device info
-  // const deviceInfo = useSelector(selectedDevice);
-  const [deviceInfo, setDeviceInfo] = useStoreState(selectedDevice, setSelectedDevice);
-  const [updated, setUpdated] = useStoreState(submitted, setSubmitted);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -133,8 +125,7 @@ export default function EnhancedTable (props) {
 
   const handleClick = (event, row) => {
     setSelected(row.serial);
-    setSelectedSerial(row.serial);
-    dispatch(setSelectedDevice(row));
+    dispatch(setSelectedSchedule(row));
   };
 
   const handleSelectAllClick = (event) => {
@@ -150,30 +141,14 @@ export default function EnhancedTable (props) {
     setPage(newPage);
   };
 
-  useEffect(() => {
-    data.map(device => {
-      if (device.id === deviceInfo.id && updated) {
-        device.latitude = deviceInfo.latitude;
-        device.longitude = deviceInfo.longitude;
-        device.enable_warning = deviceInfo.enable_warning;
-        device.settings = deviceInfo.settings;
-      }
-    });
-    dispatch(setSubmitted(false));
-  }, [deviceInfo, updated]);
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   const handleDetail = () => {
-    history.push('/devices/detail/?id=' + selected);
+    history.push('/schedules/detail/?id=' + selected);
   };
-
-  useEffect(() => {
-    setFilteredData(data.filter(item => !filterId || (item.group !== null && item.group.name === filterId)));
-  }, [filterId, data]);
 
   const isSelected = (serial) => selected.indexOf(serial) !== -1;
 
@@ -186,7 +161,7 @@ export default function EnhancedTable (props) {
             aria-labelledby="tableTitle"
             aria-label="enhanced table"
           >
-            <EnhancedTableHead
+            <ScheduleTableHead
               classes={classes}
               order={order}
               orderBy={orderBy}
@@ -196,7 +171,7 @@ export default function EnhancedTable (props) {
               rowCount={data.length}
             />
             <TableBody>
-              {stableSort(filteredData, getComparator(order, orderBy))
+              {stableSort(data, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.serial);
@@ -218,22 +193,21 @@ export default function EnhancedTable (props) {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell align="center">{row.serial}</TableCell>
+                      <TableCell align="center">{row.id}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">{row.group.name}</TableCell>
-                      {row.event === 'OK' ?
-                        <TableCell align="center">{row.event}</TableCell> :
-                        <TableCell align="center">
-                          <div className={classes.statusContainer}>
-                            <StatusBullet className={classes.status} size="sm" />
-                            {row.event}
-                          </div>
-                        </TableCell>
-                      }
-                      <TableCell align="center">{row.current_dim}</TableCell>
                       <TableCell align="center">{row.status}</TableCell>
-                      <TableCell align="center">{row.control_mode}</TableCell>
                       <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
+                      <TableCell align="center">
+                        <Box display="flex" justfiyContent="center">
+                          <IconButton aria-label="delete" className={classes.margin}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton aria-label="delete" className={classes.margin}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Box>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -243,7 +217,7 @@ export default function EnhancedTable (props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={filteredData.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
@@ -259,9 +233,7 @@ export default function EnhancedTable (props) {
   );
 }
 
-EnhancedTable.propTypes = {
+ScheduleTable.propTypes = {
   data: PropTypes.array.isRequired,
-  filterId: PropTypes.string.isRequired,
-  selectedSerial: PropTypes.string,
-  setSelectedSerial: PropTypes.func
+  filterId: PropTypes.string.isRequired
 };

@@ -10,6 +10,7 @@ import {
   Devices as DevicesView,
   DeviceDetail as DeviceDetailView,
   Groups as GroupsView,
+  Schedules as SchedulesView,
   NotFound as NotFoundView,
   Reports as ReportsView,
   Settings as SettingsView,
@@ -48,6 +49,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/groups"
+      />
+      <RouteWithLayout
+        component={SchedulesView}
+        exact
+        layout={MainLayout}
+        path="/schedules"
       />
       <RouteWithLayout
         component={ReportsView}

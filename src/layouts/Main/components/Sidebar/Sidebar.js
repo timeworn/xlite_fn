@@ -9,6 +9,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import EventIcon from '@material-ui/icons/Event';
 import InputIcon from '@material-ui/icons/Input';
 
 import { Profile, SidebarNav } from './components';
@@ -58,15 +59,15 @@ const Sidebar = props => {
       icon: <DeviceHubIcon/>
     },
     {
+      title: 'Schedules',
+      href: '/schedules',
+      icon: <EventIcon/>
+    },
+    {
       title: 'Reports',
       href: '/reports',
       icon: <AssignmentIcon/>
     },
-    // {
-    //   title: 'Authentication',
-    //   href: '/sign-in',
-    //   icon: <LockOpenIcon />
-    // },
     {
       title: 'Account',
       href: '/account',
