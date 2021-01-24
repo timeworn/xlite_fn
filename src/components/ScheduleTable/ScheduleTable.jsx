@@ -75,7 +75,10 @@ ScheduleTableHead.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%'
+    width: '100%',
+    '& .MuiIconButton-root': {
+      color: 'white'
+    }
   },
   paper: {
     width: '100%',
@@ -149,9 +152,21 @@ export default function ScheduleTable (props) {
     setPage(0);
   };
 
-  const handleDetail = () => {
-    history.push('/schedules/detail/?id=' + selected);
-  };
+  const handleDelete = (id) => {
+
+  }
+
+  const handleEdit = (id) => {
+    history.push('/schedules/detail/?id=' + id);
+  }
+
+  const handleCreate = () => {
+    history.push('/schedules/create');
+  }
+
+  const handleDuplicate = () => {
+
+  }
 
   const isSelected = (id) => selected.indexOf(id.toString()) !== -1;
 
@@ -202,10 +217,10 @@ export default function ScheduleTable (props) {
                       <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                       <TableCell align="center">
                         <Box display="flex" justifyContent={'center'}>
-                          <IconButton aria-label="delete" className={classes.margin}>
+                          <IconButton aria-label="delete" className={classes.margin} onClick={() => handleEdit(row.id)}>
                             <EditIcon />
                           </IconButton>
-                          <IconButton aria-label="delete" className={classes.margin}>
+                          <IconButton aria-label="delete" className={classes.margin} onClick={() => handleDelete(row.id)}>
                             <DeleteIcon />
                           </IconButton>
                         </Box>
@@ -226,10 +241,18 @@ export default function ScheduleTable (props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <Box>
-        <Button variant="contained" color="primary" onClick={handleDetail}>
-          More details
-        </Button>
+      <Box display={"flex"}>
+        <Box mr={'20px'}>
+          <Button variant="contained" color="primary" onClick={handleCreate}>
+            New
+          </Button>
+        </Box>
+        <Box>
+          <Button variant="contained" color="primary" onClick={handleDuplicate}>
+            Duplicate
+          </Button>
+        </Box>
+
       </Box>
     </div>
   );

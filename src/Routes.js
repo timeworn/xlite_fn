@@ -17,6 +17,9 @@ import {
   SignIn as SignInView,
   SignUp as SignUpView
 } from './views';
+
+import ScheduleCreate from './views/Schedules/ScheduleCreate';
+import ScheduleDetail from 'views/Schedules/ScheduleDetail';
 import { AuthService } from 'core/services/auth.service';
 import LogoutView from './views/Logout';
 
@@ -55,6 +58,18 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/schedules"
+      />
+      <RouteWithLayout
+        component={ScheduleCreate}
+        exact
+        layout={MainLayout}
+        path="/schedules/create"
+      />
+      <RouteWithLayout
+        component={ScheduleDetail}
+        exact
+        layout={MainLayout}
+        path="/schedules/detail"
       />
       <RouteWithLayout
         component={ReportsView}
