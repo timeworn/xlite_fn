@@ -124,7 +124,6 @@ export default function ScheduleTable (props) {
   };
 
   const handleClick = (event, row) => {
-    console.log(selected.find(item => item !== row.id.toString()));
     if (event.target.checked || selected.find(item => item !== row.id.toString())) {
       setSelected([].concat(row.id.toString()));
     } else if (event.target.checked && selected.find(item => item !== row.id.toString())) {
