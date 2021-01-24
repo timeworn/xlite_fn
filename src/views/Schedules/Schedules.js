@@ -25,8 +25,6 @@ export default function Schedules () {
     SchedulesService.instance.retrieveAll().then(devices => setData(devices));
   }, []);
 
-  console.log(data);
-
   const classes = useStyle();
   return (
     <Box className={classes.root} id="screenshot">

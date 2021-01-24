@@ -124,14 +124,18 @@ export default function ScheduleTable (props) {
   };
 
   const handleClick = (event, row) => {
-    setSelected(row.serial);
+    console.log(selected.find(item => item !== row.id.toString()));
+    if (event.target.checked || selected.find(item => item !== row.id.toString())) {
+      setSelected([].concat(row.id.toString()));
+    } else if (event.target.checked && selected.find(item => item !== row.id.toString())) {
+      return;
+    }
     dispatch(setSelectedSchedule(row));
   };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.serial);
-      setSelected(newSelecteds);
+      setSelected(data.map(item => item.id));
       return;
     }
     setSelected([]);
@@ -150,7 +154,7 @@ export default function ScheduleTable (props) {
     history.push('/schedules/detail/?id=' + selected);
   };
 
-  const isSelected = (serial) => selected.indexOf(serial) !== -1;
+  const isSelected = (id) => selected.indexOf(id.toString()) !== -1;
 
   return (
     <div className={classes.root}>
@@ -174,9 +178,8 @@ export default function ScheduleTable (props) {
               {stableSort(data, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.serial);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = `schedule-table-checkbox-${index}`;
                   return (
                     <TableRow
                       hover
@@ -184,7 +187,7 @@ export default function ScheduleTable (props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.serial}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -199,7 +202,7 @@ export default function ScheduleTable (props) {
                       <TableCell align="center">{row.status}</TableCell>
                       <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                       <TableCell align="center">
-                        <Box display="flex" justfiyContent="center">
+                        <Box display="flex" justifyContent={'center'}>
                           <IconButton aria-label="delete" className={classes.margin}>
                             <EditIcon />
                           </IconButton>
