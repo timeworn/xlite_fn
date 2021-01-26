@@ -3,8 +3,8 @@ export const ScheduleActionTypes = {
 };
 
 
-export const setSelectedSchedule = (group) => ({
+export const setSelectedSchedule = (schedule) => ({
   type: ScheduleActionTypes.SET_SELECTEDSCHEDULE_INFO,
-  group
+  schedule
 });
 

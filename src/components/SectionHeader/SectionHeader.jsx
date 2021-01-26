@@ -61,7 +61,7 @@ const SectionHeader = props => {
               {optionInfo.title}
             </MenuItem>
             {optionInfo.options.map((item, key) =>
-              (<MenuItem key={key} value={item.name}>{item.title}</MenuItem>)
+              (<MenuItem key={key} value={item.name}>{item.name}</MenuItem>)
             )}
           </Select>
           }

@@ -4,9 +4,11 @@
       <w>axios</w>
       <w>checkwarning</w>
       <w>currentpos</w>
+      <w>detai</w>
       <w>devicehistory</w>
       <w>lastupdated</w>
       <w>mapcontainer</w>
+      <w>opval</w>
       <w>sche</w>
       <w>sched</w>
       <w>selecteddevice</w>

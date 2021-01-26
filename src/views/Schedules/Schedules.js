@@ -22,7 +22,7 @@ export default function Schedules () {
   const [filterSchedule, setFilterSchedule] = useState('');
 
   useEffect(() => {
-    SchedulesService.instance.retrieveAll().then(devices => setData(devices));
+    SchedulesService.instance.retrieveAll().then(schedules => setData(schedules));
   }, []);
 
   const classes = useStyle();

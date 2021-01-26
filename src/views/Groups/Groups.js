@@ -40,6 +40,7 @@ const Groups = () => {
 
   useEffect(() => {
     GroupsService.instance.retrieveAll().then(groups => {
+      console.log(groups);
       setAllGroups(groups);
       dispatch(setAllGroup(groups));
     });

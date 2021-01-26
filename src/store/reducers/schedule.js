@@ -3,7 +3,7 @@ import { ScheduleActionTypes } from 'store/actions/schedule';
 
 const initState = {
   selectedSchedule: {
-    id: 0,
+    id: null,
     name: '',
     status: '',
     schedule: '',
