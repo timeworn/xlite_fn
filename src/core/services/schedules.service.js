@@ -11,7 +11,7 @@ export class SchedulesService extends CoreService {
   }
 
   async createSchedule(data) {
-    return this.axiosDataResolver(await axios.post(this.configuration.GROUPS_URL + '/' + data.group.id + '/schedules', data, {
+    return this.axiosDataResolver(await axios.post(this.configuration.GROUPS_URL + '/' + data.group.id + '/schedules/', data, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -19,11 +19,11 @@ export class SchedulesService extends CoreService {
     ));
   }
   async updateSchedule(data) {
-    return this.axiosDataResolver(await axios.put(this.configuration.GROUPS_URL + '/' + data.group.id + '/schedules' + data.id, data));
+    return this.axiosDataResolver(await axios.put(this.configuration.GROUPS_URL + '/' + data.group.id + '/schedules/' + data.id, data));
   }
 
   async removeSchedule(data) {
-    return this.axiosDataResolver(await axios.delete(this.configuration.GROUPS_URL + '/' + data.group.id + '/schedules' + data.id));
+    return this.axiosDataResolver(await axios.delete(this.configuration.GROUPS_URL + '/' + data.group.id + '/schedules/' + data.id));
   }
 
   axiosDataResolver(axiosData) {

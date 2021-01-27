@@ -3,12 +3,14 @@ import Box from '@material-ui/core/Box';
 import { Button, Grid, MenuItem, Select, TextField } from '@material-ui/core';
 import ScheduleDetailTitle from 'views/Schedules/components/ScheduleDetailTitle';
 import { makeStyles } from '@material-ui/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Switch from '@material-ui/core/Switch';
 import { GroupsService } from 'core/services/groups.service';
 import ScheduleSetting from 'views/Schedules/ScheduleSetting';
 import { SchedulesService } from 'core/services/schedules.service';
 import { setSelectedSchedule } from 'store/actions/schedule';
+import { selectedMainSchedule, selectedSchedule } from 'store/selectors/schedule';
+import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -39,11 +41,17 @@ const useStyle = makeStyles((theme) => ({
 export default function ScheduleDetail () {
 
   const dispatch = useDispatch();
+  const detailInfo = useSelector(selectedSchedule);
+  const scheduleInfo = useSelector(selectedMainSchedule);
   const [data, setData] = useState([]);
   const [statusValue, setStatusValue] = useState(true);
   const [allGroups, setAllGroups] = useState([]);
   const [opval, setOpval] = useState('');
   const [currentSchedule, setCurrentSchedule] = useState({});
+  const [updated, setUpdated] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [num, setNum] = useState(0);
 
   // Get device id from url
   const paramsString = window.location.search;
@@ -61,6 +69,23 @@ export default function ScheduleDetail () {
     const result = data.filter(item => item.id === parseInt(scheduleId));
     setCurrentSchedule(result[0]);
   }, [data]);
+
+  useEffect(() => {
+    setNum(num + 1);
+    if (num === 0) {
+      return;
+    }
+    if (!detailInfo.id) {
+      return;
+    }
+    SchedulesService.instance.updateSchedule(detailInfo).then(updatedData => {
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    }).catch(error => {
+      setError(true);
+      setTimeout(() => setError(false), 2000);
+    });
+  }, [updated]);
 
   useEffect(() => {
     dispatch(setSelectedSchedule(currentSchedule));
@@ -84,8 +109,22 @@ export default function ScheduleDetail () {
 
   const handleGroupChange = (event) => {
     setOpval(event.target.value);
-    currentSchedule.group.name = opval;
+    const newGroup = allGroups.filter(item => item.name === event.target.value);
+    currentSchedule.group = newGroup[0];
   };
+
+  const handleUpdate = () => {
+    setUpdated(!updated);
+    const schedule = {
+      'schedule': scheduleInfo
+    };
+
+    dispatch(setSelectedSchedule({
+      ...detailInfo,
+      'schedule': JSON.stringify(schedule)
+    }));
+  };
+
 
   const classes = useStyle();
   return (
@@ -147,11 +186,13 @@ export default function ScheduleDetail () {
           <ScheduleSetting />
         </Grid>
         <Grid item lg={12} md={12} xl={12} xs={12}>
-          <Button variant="contained" color="secondary">
-            Save
+          <Button variant="contained" color="secondary" onClick={handleUpdate}>
+            Update
           </Button>
         </Grid>
       </Grid>
+      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </Box>
   );
 }

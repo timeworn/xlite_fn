@@ -7,7 +7,7 @@ const initState = {
     name: '',
     status: '',
     schedule: '',
-    last_updated: '',
+    last_updated: '2020-12-06 14:32:25',
     group: {}
   },
   selectedMainSchedule: []
