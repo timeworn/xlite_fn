@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +9,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { getComparator, stableSort } from 'common/util';
 import { setSelectedSchedule } from 'store/actions/schedule';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import { SchedulesService } from 'core/services/schedules.service';
+import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 
 
 const headCells = [
@@ -107,18 +114,26 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ScheduleTable (props) {
+export default function ScheduleTable () {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const classes = useStyles();
-  const { data, filterId } = props;
 
+  const [data, setData] = useState([]);
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [order, setOrder] = React.useState('asc');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [open, setOpen] = useState(false);
+  const [delId, setDelId] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    SchedulesService.instance.retrieveAll().then(schedules => setData(schedules));
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -153,20 +168,38 @@ export default function ScheduleTable (props) {
   };
 
   const handleDelete = (id) => {
-
-  }
+    setOpen(true);
+    setDelId(id);
+  };
 
   const handleEdit = (id) => {
     history.push('/schedules/detail/?id=' + id);
-  }
+  };
 
   const handleCreate = () => {
     history.push('/schedules/create');
-  }
+  };
 
   const handleDuplicate = () => {
 
-  }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleFinalDelete = () => {
+    setData(data.filter(item => item.id !== delId));
+    const info = data.filter(item => item.id === delId);
+    SchedulesService.instance.removeSchedule(info[0]).then(success => {
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    }).catch(error => {
+      setError(true);
+      setTimeout(() => setError(false), 2000);
+    });
+    handleClose();
+  };
 
   const isSelected = (id) => selected.indexOf(id.toString()) !== -1;
 
@@ -241,7 +274,7 @@ export default function ScheduleTable (props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <Box display={"flex"}>
+      <Box display={'flex'}>
         <Box mr={'20px'}>
           <Button variant="contained" color="primary" onClick={handleCreate}>
             New
@@ -252,13 +285,30 @@ export default function ScheduleTable (props) {
             Duplicate
           </Button>
         </Box>
-
       </Box>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Confirm dialog'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Do you want really to delete schedule #{delId}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" variant={'contained'}>
+            Disagree
+          </Button>
+          <Button onClick={handleFinalDelete} color="primary" variant={'contained'} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </div>
   );
 }
-
-ScheduleTable.propTypes = {
-  data: PropTypes.array.isRequired,
-  filterId: PropTypes.string.isRequired
-};

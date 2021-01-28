@@ -29,7 +29,7 @@ const Profile = props => {
   const { className, ...rest } = props;
 
   const [user, setUser] = useStoreState(currentUser, setCurrentUser);
-  const [avatarSrc, setAvatarSrc] = useState("");
+  const [avatarSrc, setAvatarSrc] = useState('');
 
   useEffect(() => {
     AuthService.instance.getProfile().then(user => setUser(user));
@@ -39,7 +39,7 @@ const Profile = props => {
 
   useEffect(() => {
     setAvatarSrc('https://i.pravatar.cc/150?u=' + user.email);
-  }, [user.email])
+  }, [user.email]);
 
   return (
     <div

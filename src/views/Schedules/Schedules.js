@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SectionHeader from 'components/SectionHeader/SectionHeader';
-import { SchedulesService } from 'core/services/schedules.service';
 import ScheduleTable from 'components/ScheduleTable/ScheduleTable';
 
 const useStyle = makeStyles(theme => ({
@@ -17,21 +16,13 @@ const useStyle = makeStyles(theme => ({
   }
 }));
 export default function Schedules () {
-  const [data, setData] = useState([]);
-  const [filterId, setFilterId] = useState('');
-  const [filterSchedule, setFilterSchedule] = useState('');
-
-  useEffect(() => {
-    SchedulesService.instance.retrieveAll().then(schedules => setData(schedules));
-  }, []);
-
   const classes = useStyle();
   return (
     <Box className={classes.root} id="screenshot">
       <Grid container spacing={4}>
         <Grid item lg={12} md={12} xl={12} xs={12}>
           <SectionHeader title="Schedules" />
-          <ScheduleTable data={data} filterId={filterId} selectedSerial={filterSchedule} setSelectedSerial={setFilterSchedule} />
+          <ScheduleTable />
         </Grid>
         <Grid item lg={12} md={12} xl={12} xs={12}>
         </Grid>
