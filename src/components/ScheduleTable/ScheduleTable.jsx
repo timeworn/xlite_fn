@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { getComparator, stableSort } from 'common/util';
+import { getComparator, makeName, stableSort } from 'common/util';
 import { setSelectedSchedule } from 'store/actions/schedule';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -141,6 +140,8 @@ export default function ScheduleTable () {
   const [delId, setDelId] = useState(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [duplicatedEnable, setDuplicatedEnable] = useState(false);
+  const [selectedRowSchedule, setSelectedRowSchedule] = useState({});
 
   useEffect(() => {
     SchedulesService.instance.retrieveAll().then(schedules => setData(schedules));
@@ -155,6 +156,8 @@ export default function ScheduleTable () {
   const handleClick = (event, row) => {
     if (event.target.checked || selected.find(item => item !== row.id.toString())) {
       setSelected([].concat(row.id.toString()));
+      const filterInfo = data.filter(one => one.id === row.id);
+      setSelectedRowSchedule(filterInfo[0]);
     } else if (event.target.checked && selected.find(item => item !== row.id.toString())) {
       return false;
     }
@@ -192,7 +195,22 @@ export default function ScheduleTable () {
   };
 
   const handleDuplicate = () => {
-
+    if (!selected.length) {
+      setDuplicatedEnable(true);
+      setTimeout(() => setDuplicatedEnable(false), 2000);
+    } else {
+      let newDuplicatedInfo = Object.assign({}, selectedRowSchedule);
+      newDuplicatedInfo.id = null;
+      newDuplicatedInfo.name = makeName(5);
+      SchedulesService.instance.createSchedule(newDuplicatedInfo).then(createdData => {
+        setData(data.concat(createdData));
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      }).catch(error => {
+        setError(true);
+        setTimeout(() => setError(false), 2000);
+      });
+    }
   };
 
   const handleClose = () => {
@@ -318,6 +336,7 @@ export default function ScheduleTable () {
           </Button>
         </DialogActions>
       </Dialog>
+      {duplicatedEnable ? <CustomizedSnackbars variant="error" message="First of all, please select row that you are going to duplicate." /> : ''}
       {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
       {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </div>

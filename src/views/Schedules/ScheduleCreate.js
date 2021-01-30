@@ -171,7 +171,7 @@ export default function ScheduleCreate () {
           </Button>
         </Grid>
       </Grid>
-      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {success ? <CustomizedSnackbars variant="success" message="Successfully created!" /> : ''}
       {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </Box>
   );
