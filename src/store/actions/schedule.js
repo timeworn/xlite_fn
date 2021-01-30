@@ -9,7 +9,7 @@ export const setSelectedSchedule = (schedule) => ({
   schedule
 });
 
-export const setMainSchedule = (schedule) => ({
+export const setSelectedMainSchedule = (schedule) => ({
   type: ScheduleActionTypes.SET_MAINSCHEDULE_INFO,
   schedule
 })

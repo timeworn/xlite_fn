@@ -3,7 +3,6 @@ import Box from '@material-ui/core/Box';
 import { Button, Grid, MenuItem, Select, TextField } from '@material-ui/core';
 import ScheduleDetailTitle from 'views/Schedules/components/ScheduleDetailTitle';
 import { makeStyles } from '@material-ui/styles';
-import { useDispatch, useSelector } from 'react-redux';
 import Switch from '@material-ui/core/Switch';
 import { GroupsService } from 'core/services/groups.service';
 import ScheduleSetting from 'views/Schedules/ScheduleSetting';
@@ -11,6 +10,8 @@ import { SchedulesService } from 'core/services/schedules.service';
 import { setSelectedSchedule } from 'store/actions/schedule';
 import { selectedMainSchedule, selectedSchedule } from 'store/selectors/schedule';
 import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
+import useStoreState from 'assets/js/use-store-state';
+import { useSelector } from 'react-redux';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -40,14 +41,12 @@ const useStyle = makeStyles((theme) => ({
 
 export default function ScheduleDetail () {
 
-  const dispatch = useDispatch();
-  const detailInfo = useSelector(selectedSchedule);
   const scheduleInfo = useSelector(selectedMainSchedule);
   const [data, setData] = useState([]);
   const [statusValue, setStatusValue] = useState(true);
   const [allGroups, setAllGroups] = useState([]);
   const [opval, setOpval] = useState('');
-  const [currentSchedule, setCurrentSchedule] = useState({});
+  const [currentSchedule, setCurrentSchedule] = useStoreState(selectedSchedule, setSelectedSchedule);
   const [updated, setUpdated] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -75,10 +74,10 @@ export default function ScheduleDetail () {
     if (num === 0) {
       return;
     }
-    if (!detailInfo.id) {
+    if (!currentSchedule.id) {
       return;
     }
-    SchedulesService.instance.updateSchedule(detailInfo).then(updatedData => {
+    SchedulesService.instance.updateSchedule(currentSchedule).then(updatedData => {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     }).catch(error => {
@@ -88,12 +87,12 @@ export default function ScheduleDetail () {
   }, [updated]);
 
   useEffect(() => {
-    dispatch(setSelectedSchedule(currentSchedule));
     currentSchedule && currentSchedule.id && setOpval(currentSchedule.group.name);
     currentSchedule && currentSchedule.id && setStatusValue(currentSchedule.status === 'ACTIVE');
   }, [currentSchedule]);
 
   const handleOnOffChange = (event) => {
+    setStatusValue(!statusValue);
     setCurrentSchedule({
       ...currentSchedule,
       [event.target.name]: event.target.checked ? 'ACTIVE' : 'NON-ACTIVE'
@@ -110,7 +109,10 @@ export default function ScheduleDetail () {
   const handleGroupChange = (event) => {
     setOpval(event.target.value);
     const newGroup = allGroups.filter(item => item.name === event.target.value);
-    currentSchedule.group = newGroup[0];
+    setCurrentSchedule({
+      ...currentSchedule,
+      'group': newGroup[0]
+    });
   };
 
   const handleUpdate = () => {
@@ -118,11 +120,10 @@ export default function ScheduleDetail () {
     const schedule = {
       'schedule': scheduleInfo
     };
-
-    dispatch(setSelectedSchedule({
-      ...detailInfo,
+    setCurrentSchedule({
+      ...currentSchedule,
       'schedule': JSON.stringify(schedule)
-    }));
+    });
   };
 
 

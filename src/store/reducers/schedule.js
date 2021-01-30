@@ -5,12 +5,41 @@ const initState = {
   selectedSchedule: {
     id: null,
     name: '',
-    status: '',
+    status: 'ACTIVE',
     schedule: '',
     last_updated: '2020-12-06 14:32:25',
     group: {}
   },
-  selectedMainSchedule: []
+  selectedMainSchedule: [
+    {
+      "date": "Sunday",
+      "dim": []
+    },
+    {
+      "date": "Monday",
+      "dim": []
+    },
+    {
+      "date": "Tuesday",
+      "dim": []
+    },
+    {
+      "date": "Wednesday",
+      "dim": []
+    },
+    {
+      "date": "Thursday",
+      "dim": []
+    },
+    {
+      "date": "Friday",
+      "dim": []
+    },
+    {
+      "date": "Saturday",
+      "dim": []
+    }
+    ]
 };
 
 export default (state = initState, action) => {

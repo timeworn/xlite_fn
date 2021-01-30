@@ -16,6 +16,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { SchedulesService } from 'core/services/schedules.service';
 import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
+import useStoreState from 'assets/js/use-store-state';
+import { selectedSchedule } from 'store/selectors/schedule';
 
 
 const headCells = [
@@ -26,6 +28,15 @@ const headCells = [
   { id: 'lastupdated', numeric: true, disablePadding: false, label: 'Last updated' },
   { id: 'action', numeric: true, disablePadding: false, label: 'Action' }
 ];
+
+const defaultScheduleInfo = {
+  id: null,
+  name: '',
+  status: 'ACTIVE',
+  schedule: '',
+  last_updated: '2020-12-06 14:32:25',
+  group: {}
+};
 
 function ScheduleTableHead (props) {
   const { classes, order, orderBy, numSelected, rowCount, onSelectAllClick, onRequestSort } = props;
@@ -115,17 +126,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ScheduleTable () {
-  const dispatch = useDispatch();
-  const history = useHistory();
 
+  const history = useHistory();
   const classes = useStyles();
 
   const [data, setData] = useState([]);
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [order, setOrder] = React.useState('asc');
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [currentSchedule, setCurrentSchedule] = useStoreState(selectedSchedule, setSelectedSchedule);
+  const [orderBy, setOrderBy] = useState('calories');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState('asc');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [delId, setDelId] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -145,9 +156,8 @@ export default function ScheduleTable () {
     if (event.target.checked || selected.find(item => item !== row.id.toString())) {
       setSelected([].concat(row.id.toString()));
     } else if (event.target.checked && selected.find(item => item !== row.id.toString())) {
-      return;
+      return false;
     }
-    dispatch(setSelectedSchedule(row));
   };
 
   const handleSelectAllClick = (event) => {
@@ -177,6 +187,7 @@ export default function ScheduleTable () {
   };
 
   const handleCreate = () => {
+    setCurrentSchedule(defaultScheduleInfo);
     history.push('/schedules/create');
   };
 

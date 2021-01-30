@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import ScheduleDim from 'views/Schedules/components/ScheduleDim';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Input, Slider } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-import { selectedMainSchedule, selectedSchedule } from 'store/selectors/schedule';
-import { setMainSchedule } from 'store/actions/schedule';
+import { selectedMainSchedule } from 'store/selectors/schedule';
+import { setSelectedMainSchedule } from 'store/actions/schedule';
 import TextField from '@material-ui/core/TextField';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import useStoreState from 'assets/js/use-store-state';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -25,12 +25,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ScheduleDate (props) {
   const classes = useStyles();
-  const { data } = props;
-  const dispatch = useDispatch();
-  const detailInfo = useSelector(selectedSchedule);
-  const mainSchedule = useSelector(selectedMainSchedule);
+  const { data, index } = props;
+
+  const [mainSchedule, setMainSchedule] = useStoreState(selectedMainSchedule, setSelectedMainSchedule);
   const [currentData, setCurrentData] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState('08:00');
   const [dimValue, setDimValue] = useState(20);
@@ -39,15 +37,7 @@ export default function ScheduleDate (props) {
     setCurrentData(data);
   }, [data]);
 
-  useEffect(() => {
-    if (detailInfo) {
-      const info = JSON.parse(detailInfo.schedule || '{}');
-      dispatch(setMainSchedule(info.schedule));
-    }
-  }, [detailInfo]);
-
   const handleAdd = () => {
-    setCurrentIndex(mainSchedule.findIndex(v => v.date === currentData.date));
     setOpen(true);
   };
 
@@ -61,17 +51,18 @@ export default function ScheduleDate (props) {
     const d = [...mainSchedule];
     const index = d.findIndex(v => v.date === newCurrentData.date);
     if (d.length - 1 === index) {
-      dispatch(setMainSchedule([...d.slice(0, index), newCurrentData]));
+      setMainSchedule([...d.slice(0, index), newCurrentData]);
     } else {
-      dispatch(setMainSchedule([...d.slice(0, index), newCurrentData, ...d.slice(index + 1)]));
+      setMainSchedule([...d.slice(0, index), newCurrentData, ...d.slice(index + 1)]);
     }
     setCurrentData(newCurrentData);
 
   };
 
   const handleSet = () => {
-    if (currentData.dim.length > 8) {
+    if (currentData.dim.length > 7) {
       alert('You can set max 8 slots.');
+      return false;
     } else {
       const newSlot = {
         time: time,
@@ -85,9 +76,9 @@ export default function ScheduleDate (props) {
       const original = [...mainSchedule];
       const index = original.findIndex(v => v.date === newCurrentData.date);
       if (original.length - 1 === index) {
-        dispatch(setMainSchedule([...original.slice(0, index), newCurrentData]));
+        setMainSchedule([...original.slice(0, index), newCurrentData]);
       } else {
-        dispatch(setMainSchedule([...original.slice(0, index), newCurrentData, ...original.slice(index + 1)]));
+        setMainSchedule([...original.slice(0, index), newCurrentData, ...original.slice(index + 1)]);
       }
       setCurrentData(newCurrentData);
     }
@@ -127,7 +118,7 @@ export default function ScheduleDate (props) {
         <ScheduleDim data={dim} key={key} />
       ))}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-        <IconButton aria-label="delete" onClick={() => handleAdd()}>
+        <IconButton aria-label="add" onClick={() => handleAdd()}>
           <AddCircleOutlineIcon />
         </IconButton>
         <IconButton aria-label="delete" onClick={() => handleDelete()}>
@@ -135,7 +126,7 @@ export default function ScheduleDate (props) {
         </IconButton>
       </Box>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
-        <DialogTitle id="form-dialog-title">slot #{currentIndex}</DialogTitle>
+        <DialogTitle id="form-dialog-title">slot #{index}</DialogTitle>
         <DialogContent>
           <form className={classes.container} noValidate>
             <TextField
@@ -196,5 +187,6 @@ export default function ScheduleDate (props) {
 }
 
 ScheduleDate.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired
 };

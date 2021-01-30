@@ -24,8 +24,6 @@ export default function Schedules () {
           <SectionHeader title="Schedules" />
           <ScheduleTable />
         </Grid>
-        <Grid item lg={12} md={12} xl={12} xs={12}>
-        </Grid>
       </Grid>
     </Box>
   );
