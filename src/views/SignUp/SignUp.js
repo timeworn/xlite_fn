@@ -251,7 +251,7 @@ const SignUp = props => {
         >
           <div className={classes.content}>
             <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
+              <IconButton onClick={handleBack} color={"secondary"}>
                 <ArrowBackIcon/>
               </IconButton>
             </div>
@@ -329,7 +329,7 @@ const SignUp = props => {
                   >
                     I have read the{' '}
                     <Link
-                      color="primary"
+                      color="secondary"
                       component={RouterLink}
                       to="#"
                       underline="always"
@@ -346,7 +346,7 @@ const SignUp = props => {
                 )}
                 <Button
                   className={classes.signUpButton}
-                  color="primary"
+                  color="secondary"
                   disabled={!formState.isValid}
                   fullWidth
                   size="large"
@@ -367,7 +367,7 @@ const SignUp = props => {
                   Sign up now
                 </Button>
                 <Typography
-                  color="textSecondary"
+                  color="text"
                   variant="body1"
                 >
                   Have an account?{' '}
@@ -375,6 +375,7 @@ const SignUp = props => {
                     component={RouterLink}
                     to="/sign-in"
                     variant="h6"
+                    color="secondary"
                   >
                     Sign in
                   </Link>
