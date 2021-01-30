@@ -214,7 +214,7 @@ const SignIn = props => {
         <Grid className={classes.content} item lg={7} xs={12}>
           <div className={classes.content}>
             <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
+              <IconButton onClick={handleBack} color="secondary">
                 <ArrowBackIcon/>
               </IconButton>
             </div>
@@ -255,7 +255,7 @@ const SignIn = props => {
                 />
                 <Button
                   className={classes.signInButton}
-                  color="primary"
+                  color="secondary"
                   disabled={!formState.isValid}
                   fullWidth
                   size="large"
@@ -283,6 +283,7 @@ const SignIn = props => {
                     component={RouterLink}
                     to="/sign-up"
                     variant="h6"
+                    color="secondary"
                   >
                     Sign up
                   </Link>
