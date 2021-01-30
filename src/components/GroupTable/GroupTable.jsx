@@ -173,9 +173,9 @@ export default function GroupTable () {
                       key={row.name}
                       selected={isItemSelected}
                     >
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.devices.length}</TableCell>
-                      <TableCell align="right">{row.note}</TableCell>
+                      <TableCell align="center">{row.name}</TableCell>
+                      <TableCell align="center">{row.devices.length}</TableCell>
+                      <TableCell align="center">{row.note}</TableCell>
                     </TableRow>
                   );
                 })}

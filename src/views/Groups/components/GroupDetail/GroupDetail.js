@@ -159,7 +159,7 @@ const GroupDetail = () => {
     const groups = data.filter(item => item.id !== selected.id);
     setData(groups);
     const removeResult = await GroupsService.instance.removeGroup(selected.id);
-    debugger;
+
     if (!removeResult.success) {
       return;
     }
@@ -215,7 +215,7 @@ const GroupDetail = () => {
                   <ListItemText id={labelId} primary={item.name} />
                   <ListItemSecondaryAction>
                     <IconButton className="delIcon" aria-label="delete" onClick={() => handleDelete(item)}>
-                      <DeleteIcon color="primary" />
+                      <DeleteIcon color="secondary" />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>

@@ -197,7 +197,7 @@ const Reports = () => {
   return (
     <div className={classes.root} id="screenshot">
       <PageHeader name="Reports" className={classes.pageHeader}/>
-      <SelectionHeader title='Generate reports' className={classes.sectionHeader}/>
+      <SelectionHeader title='Generate reports' className={classes.sectionHeader} align={"left"}/>
       <div className={classes.halfPage}>
         <Grid container>
           <Grid item lg={6} md={6} xl={6} xs={12}>
