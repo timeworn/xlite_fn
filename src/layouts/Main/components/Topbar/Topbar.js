@@ -59,7 +59,7 @@ const Topbar = props => {
               className={classes.logoImg}
               src="/images/logos/logo.png"
             />
-            <h1 className={classes.title}>Brand</h1>
+            <h1 className={classes.title}>Xlite</h1>
           </div>
         </RouterLink>
         <div className={classes.flexGrow}/>
