@@ -50,11 +50,11 @@ export default function DevicePosition (props) {
   };
 
   const handleSaveInfo = () => {
-    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(result => {
+    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(() => {
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
       })
-      .catch(error => {
+      .catch(() => {
         setError(true);
         setTimeout(() => setError(false), 2000);
       });
