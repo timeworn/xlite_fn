@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Input, MenuItem, Select, Slider, TextField } from '@material-ui/core';
@@ -8,6 +9,7 @@ import { setSelectedDevice } from 'store/actions/device';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import { DevicesService } from 'core/services/devices.service';
+import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 
 const control_mode = ['MANUAL', 'AUTO', 'SCHEDULED'];
 
@@ -34,10 +36,13 @@ const useStyle = makeStyles((theme) => ({
   }
 }));
 
-export default function DeviceEnvironment () {
+export default function DeviceEnvironment (props) {
+  const { cancel, setCancel } = props;
   const deviceInfo = useSelector(selectedDevice);
   const dispatch = useDispatch();
   const [statusValue, setStatusValue] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const classes = useStyle();
 
@@ -92,17 +97,23 @@ export default function DeviceEnvironment () {
   };
 
   const handleSaveInfo = () => {
-    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(info => console.log(info))
-      .catch(error => console.log(error));
-  }
+    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(result => {
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      })
+      .catch(error => {
+        setError(true);
+        setTimeout(() => setError(false), 2000);
+      });
+  };
 
   const handleCancelInfo = () => {
-    return false;
-  }
+    setCancel(!cancel);
+  };
 
   return (
     <Box border={'1px solid #afadad'} margin={'10px'} padding={'10px'} className={classes.root}>
-      <Box color={'white'} display={"flex"} fontSize={"20px"} mb={"10px"}>
+      <Box color={'white'} display={'flex'} fontSize={'20px'} mb={'10px'}>
         <Box>Device Details - ID: </Box>
         {deviceInfo && <Box>{deviceInfo.serial}</Box>}
       </Box>
@@ -148,6 +159,7 @@ export default function DeviceEnvironment () {
           <Grid item xs>
             <Slider
               name="current_dim"
+              step={10}
               onChange={handleSliderChange}
               aria-labelledby="input-slider"
               color="secondary"
@@ -165,7 +177,7 @@ export default function DeviceEnvironment () {
               onChange={handleInputChange}
               onBlur={handleBlur}
               inputProps={{
-                step: 1,
+                step: 10,
                 min: 0,
                 max: 100,
                 type: 'number',
@@ -193,7 +205,7 @@ export default function DeviceEnvironment () {
           </Grid>
         </Grid>
       </Box>
-      <Box mt={"30px"} display={"flex"} justifyContent={"space-between"}>
+      <Box mt={'30px'} display={'flex'} justifyContent={'space-between'}>
         <Button
           color="primary"
           onClick={handleSaveInfo}
@@ -209,6 +221,13 @@ export default function DeviceEnvironment () {
           Cancel
         </Button>
       </Box>
+      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </Box>
   );
 }
+
+DeviceEnvironment.propTypes = {
+  cancel: PropTypes.bool,
+  setCancel: PropTypes.func
+};

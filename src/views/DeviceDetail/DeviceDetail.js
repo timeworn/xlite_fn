@@ -41,6 +41,7 @@ export default function DeviceDetail () {
 
   const [allDevices, setAllDevices] = useState([]);
   const [detailInfo, setDetailInfo] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   // Get device id from url
   const paramsString = window.location.search;
@@ -64,6 +65,10 @@ export default function DeviceDetail () {
     dispatch(setSelectedDevice(detailInfo[0]));
   }, [detailInfo]);
 
+  useEffect(() => {
+    handleRefresh();
+  }, [refresh])
+
   return (
     <div className={classes.root} id="device-detail">
       <Grid container spacing={4}>
@@ -82,8 +87,8 @@ export default function DeviceDetail () {
               <RefreshIcon fontSize="large" />
             </IconButton>
           </Box>
-          <DeviceEnvironment />
-          <DevicePosition />
+          <DeviceEnvironment cancel={refresh} setCancel={setRefresh}/>
+          <DevicePosition cancel={refresh} setCancel={setRefresh}/>
         </Grid>
       </Grid>
     </div>

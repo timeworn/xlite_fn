@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Box, Button, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentPos, selectedDevice } from 'store/selectors/device';
 import { DevicesService } from 'core/services/devices.service';
 import { setSelectedDevice } from 'store/actions/device';
 import { makeStyles } from '@material-ui/styles';
+import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -21,11 +23,14 @@ const useStyle = makeStyles(() => ({
   }
 }));
 
-export default function DevicePosition () {
+export default function DevicePosition (props) {
+  const { cancel, setCancel } = props;
   const dispatch = useDispatch();
   const classes = useStyle();
   const deviceInfo = useSelector(selectedDevice);
   const curPos = useSelector(currentPos);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (curPos.lat !== null) {
@@ -45,17 +50,23 @@ export default function DevicePosition () {
   };
 
   const handleSaveInfo = () => {
-    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(info => console.log(info))
-      .catch(error => console.log(error));
+    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(result => {
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      })
+      .catch(error => {
+        setError(true);
+        setTimeout(() => setError(false), 2000);
+      });
   };
 
   const handleCancelInfo = () => {
-    return false;
+    setCancel(!cancel);
   };
   return (
     <Box border={'1px solid #afadad'} margin={'10px'} padding={'10px'} className={classes.root}>
       <Box color={'white'}>
-        <Box fontSize={"20px"} mb={"10px"}>Location </Box>
+        <Box fontSize={'20px'} mb={'10px'}>Location </Box>
       </Box>
       <Box mt={'10px'}>
         {deviceInfo &&
@@ -99,6 +110,14 @@ export default function DevicePosition () {
           Cancel
         </Button>
       </Box>
+      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </Box>
   );
 }
+
+
+DevicePosition.propTypes = {
+  cancel: PropTypes.bool,
+  setCancel: PropTypes.func
+};
