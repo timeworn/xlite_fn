@@ -10,6 +10,10 @@ const icon = {
   url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'
 };
 
+const icon1 = {
+  url: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+}
+
 export function transform (position) {
   return Math.round(position * 100000) / 100000;
 }
@@ -37,7 +41,7 @@ const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
               lat: transform(marker.latitude),
               lng: transform(marker.longitude)
             }}
-            icon={icon.url}
+            icon={marker.serial === props.selected ? icon1.url : icon.url}
           >
             {props.selectedMarker === marker &&
             <InfoWindow>
@@ -69,7 +73,7 @@ const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
 });
 
 export default function AllDevicesMap (props) {
-  const { data } = props;
+  const { data, selectedDevice } = props;
   const [selectedMarker, setSelectedMarker] = useState('');
   const handleOver = (marker, event) => {
     setSelectedMarker(marker);
@@ -78,6 +82,7 @@ export default function AllDevicesMap (props) {
     <MapWithAMarker
       selectedMarker={selectedMarker}
       markers={data}
+      selected={selectedDevice}
       onMouseOver={handleOver}
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdcyKvWUXhZCh8IiO6oZtIWPhtNtXJ6iA&v=3.exp&libraries=geometry,drawing,places"
       loadingElement={<div style={{ height: `100%` }} />}
@@ -88,5 +93,6 @@ export default function AllDevicesMap (props) {
 }
 
 AllDevicesMap.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  selectedDevice: PropTypes.string
 };

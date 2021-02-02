@@ -67,7 +67,7 @@ export default function Devices () {
         </Grid>
         <Grid item md={12} xs={12}>
           <div className={classes.mapContainer}>
-            <AllDevicesMap data={data} />
+            <AllDevicesMap data={data} selectedDevice={filterDevice}/>
           </div>
         </Grid>
       </Grid>
