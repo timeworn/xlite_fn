@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DeviceEvents = props => {
-  const { className, data, ...rest } = props;
+  const { className, data, filterView, setFilterView, ...rest } = props;
   const classes = useStyles();
   const [direction, setDirection] = useState('desc');
   const [isAsc, setIsAsc] = useState(false);
@@ -64,6 +64,10 @@ const DeviceEvents = props => {
       setTableData(data.sort((a, b) => (a.last_connected < b.last_connected) ? 1 : -1));
     }
   }, [isAsc]);
+
+  const handleView = () => {
+    setFilterView(!filterView);
+  }
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -111,8 +115,8 @@ const DeviceEvents = props => {
       </CardContent>
       <Divider/>
       <CardActions className={classes.actions}>
-        <Button color="default" size="small" variant="text">
-          View all <ArrowRightIcon/>
+        <Button color="default" size="small" variant="text" onClick={handleView}>
+          {filterView ? "Events Only" : "View all"} <ArrowRightIcon/>
         </Button>
       </CardActions>
     </Card>
@@ -121,6 +125,8 @@ const DeviceEvents = props => {
 
 DeviceEvents.propTypes = {
   className: PropTypes.string,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  filterView: PropTypes.bool,
+  setFilterView: PropTypes.func
 };
 export default DeviceEvents;

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import Box from '@material-ui/core/Box';
 import { Grid } from '@material-ui/core';
-import { Assignment, AttachMoney, CalendarToday, Message } from '@material-ui/icons';
+import { Assignment, AttachMoney, CalendarToday } from '@material-ui/icons';
 
 import { ConnectedDevice, DeviceEvents, Summary } from './components';
 import SectionHeader from '../../components/SectionHeader/SectionHeader';
 import { DashboardService } from 'core/services/dashboard.service';
 import { DevicesService } from 'core/services/devices.service';
-import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,6 +27,7 @@ const Dashboard = () => {
   const [devices, setDevices] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [allClicked, setAllClicked] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -53,6 +54,15 @@ const Dashboard = () => {
     load();
   }, []);
 
+  useEffect(() => {
+    if (allClicked) {
+      setEvents(devices);
+    } else {
+      const events = devices.filter(item => item.event !== 'OK');
+      setEvents(events);
+    }
+  }, [allClicked]);
+
   const data = [{
     title: 'TOTAL DEVICES',
     value: statis.totalDeviceCount,
@@ -68,21 +78,16 @@ const Dashboard = () => {
     value: statis.offlineDeviceCount,
     Icon: Assignment,
     color: '#36b9cc'
-  }, {
-    title: 'UNKNOWN',
-    value: statis.warningDeviceCount,
-    Icon: Message,
-    color: '#f6c23e'
   }];
 
   return (
     <div className={classes.root} id="screenshot">
       <Grid item lg={12} md={12} xl={12} xs={12}>
-        <SectionHeader title="OVERVIEW"/>
+        <SectionHeader title="OVERVIEW" />
       </Grid>
-      <Box display={"flex"} justifyContent={"center"} alignItems={"center"} mt={"-16px"}>
+      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mt={'-16px'}>
         <Box width={'80%'}>
-          <Grid container spacing={4} direction="row" justify={"center"} alignItems={"center"}>
+          <Grid container spacing={4} direction="row" justify={'center'} alignItems={'center'}>
             <Grid item md={6} xs={12}>
               {data.map((item, key) =>
                 (<Grid item key={key} md={12} xs={12}>
@@ -91,15 +96,15 @@ const Dashboard = () => {
               )}
             </Grid>
             <Grid item lg={6} md={6} xl={6} xs={12}>
-              <ConnectedDevice statis={statis}/>
+              <ConnectedDevice statis={statis} />
             </Grid>
           </Grid>
         </Box>
       </Box>
       <Grid container spacing={4}>
         <Grid item lg={12} md={12} xl={12} xs={12}>
-          <SectionHeader title="LATEST EVENTS"/>
-          <DeviceEvents data={events}/>
+          <SectionHeader title="LATEST EVENTS" />
+          <DeviceEvents data={events} filterView={allClicked} setFilterView={setAllClicked} />
         </Grid>
       </Grid>
     </div>
