@@ -65,8 +65,8 @@ export default function DeviceHistory (props) {
 
   const dispatch = useDispatch();
 
-  const [range, setRange] = useState('');
-  const [measureType, setMeasureType] = useState('');
+  const [range, setRange] = useState('1d');
+  const [measureType, setMeasureType] = useState('power');
   const [statusValue, setStatusValue] = useState({});
 
   useEffect(() => {
