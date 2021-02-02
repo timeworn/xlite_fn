@@ -7,11 +7,11 @@ import Link from '@material-ui/core/Link';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 
 const icon = {
-  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'
+  url: 'http://maps.google.com/mapfiles/ms/micons/ylw-pushpin.png'
 };
 
 const icon1 = {
-  url: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'
 }
 
 export function transform (position) {

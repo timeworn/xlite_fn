@@ -43,6 +43,7 @@ export default function Devices () {
 
   const [filterId, setFilterId] = useState('');
   const [filterDevice, setFilterDevice] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     DevicesService.instance.retrieveAll().then(devices => setData(devices));
@@ -50,8 +51,19 @@ export default function Devices () {
   }, []);
 
   useEffect(() => {
+    setFilteredData(data);
+  }, [data])
+
+  useEffect(() => {
     GroupsService.instance.retrieveAll().then(groups => setGroups(groups));
   }, []);
+
+  useEffect(() => {
+    filterId ? setFilteredData(data.filter(item => item.group.name === filterId)) : setFilteredData(data);
+  }, [filterId])
+
+  console.log(filterId);
+  console.log(data);
 
   return (
     <div className={classes.root} id="screenshot">
@@ -67,7 +79,7 @@ export default function Devices () {
         </Grid>
         <Grid item md={12} xs={12}>
           <div className={classes.mapContainer}>
-            <AllDevicesMap data={data} selectedDevice={filterDevice}/>
+            <AllDevicesMap data={filteredData} selectedDevice={filterDevice}/>
           </div>
         </Grid>
       </Grid>
