@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import { makeStyles } from '@material-ui/styles';
 import { DevicesService } from 'core/services/devices.service';
 import { setSelectedDevice } from 'store/actions/device';
 import DeviceDetailTitle from 'views/DeviceDetail/components/DeviceDetailTitle/DeviceDetailTitle';

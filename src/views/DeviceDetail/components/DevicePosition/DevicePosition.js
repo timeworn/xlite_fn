@@ -55,7 +55,7 @@ export default function DevicePosition () {
   return (
     <Box border={'1px solid #afadad'} margin={'10px'} padding={'10px'} className={classes.root}>
       <Box color={'white'}>
-        <Box component={'span'}>Location </Box>
+        <Box fontSize={"20px"} mb={"10px"}>Location </Box>
       </Box>
       <Box mt={'10px'}>
         {deviceInfo &&

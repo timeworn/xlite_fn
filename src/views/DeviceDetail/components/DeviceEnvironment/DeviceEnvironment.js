@@ -102,16 +102,16 @@ export default function DeviceEnvironment () {
 
   return (
     <Box border={'1px solid #afadad'} margin={'10px'} padding={'10px'} className={classes.root}>
-      <Box color={'white'}>
-        <Box component={'span'}>Device Details - ID: </Box>
-        {deviceInfo && <Box component={'span'}>{deviceInfo.serial}</Box>}
+      <Box color={'white'} display={"flex"} fontSize={"20px"} mb={"10px"}>
+        <Box>Device Details - ID: </Box>
+        {deviceInfo && <Box>{deviceInfo.serial}</Box>}
       </Box>
       <Box mt={'10px'}>
         {deviceInfo &&
         <TextField
           label="Name"
           margin="dense"
-          name="control_mode"
+          name="name"
           onChange={handleChange}
           required
           value={deviceInfo.name}
