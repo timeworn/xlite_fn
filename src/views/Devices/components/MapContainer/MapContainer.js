@@ -5,10 +5,15 @@ import { compose } from 'recompose';
 import Box from '@material-ui/core/Box';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import { setCurrentPos } from 'store/actions/device';
+import { v1 as uuIdv1 } from "uuid";
 
 const icon = {
   url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'
 };
+
+const icon1 = {
+  url: 'http://maps.google.com/mapfiles/ms/micons/ylw-pushpin.png'
+}
 
 export function transform (position) {
   return Math.round(position * 100000) / 100000;
@@ -34,6 +39,11 @@ const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
       lat: e.latLng.lat(),
       lng: e.latLng.lng()
     })}>
+      {curPos && curPos.lat ? <Marker
+        key={uuIdv1()}
+        position={{ lat: curPos.lat, lng: transform(curPos.lng) }}
+        icon={icon1.url}
+      /> : ""}
       {props.markers.map((marker, key) => {
         const onMouseOver = props.onMouseOver.bind(this, marker);
         return (
