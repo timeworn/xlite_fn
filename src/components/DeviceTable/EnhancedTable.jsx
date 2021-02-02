@@ -225,13 +225,17 @@ export default function EnhancedTable (props) {
                         <TableCell align="center">{row.event}</TableCell> :
                         <TableCell align="center">
                           <div className={classes.statusContainer}>
-                            <StatusBullet className={classes.status} size="sm" />
+                            <StatusBullet className={classes.status} color={row.event.includes("OK") ? "info" : "danger"} size="sm" />
                             {row.event}
                           </div>
                         </TableCell>
                       }
                       <TableCell align="center">{row.current_dim}</TableCell>
-                      <TableCell align="center">{row.status}</TableCell>
+                      <TableCell align="center">
+                        <Box color={row.status === "ONLINE" ? "#1CC88A" : "#36B9CC"}>
+                          {row.status}
+                        </Box>
+                      </TableCell>
                       <TableCell align="center">{row.control_mode}</TableCell>
                       <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                     </TableRow>
