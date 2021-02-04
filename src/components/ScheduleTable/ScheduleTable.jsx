@@ -206,7 +206,7 @@ export default function ScheduleTable () {
         setData(data.concat(createdData));
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
-      }).catch(error => {
+      }).catch(() => {
         setError(true);
         setTimeout(() => setError(false), 2000);
       });
@@ -220,10 +220,10 @@ export default function ScheduleTable () {
   const handleFinalDelete = () => {
     setData(data.filter(item => item.id !== delId));
     const info = data.filter(item => item.id === delId);
-    SchedulesService.instance.removeSchedule(info[0]).then(success => {
+    SchedulesService.instance.removeSchedule(info[0]).then(() => {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
-    }).catch(error => {
+    }).catch(() => {
       setError(true);
       setTimeout(() => setError(false), 2000);
     });
@@ -275,7 +275,7 @@ export default function ScheduleTable () {
                       <TableCell align="center">{row.id}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">{row.group.name}</TableCell>
-                      <TableCell align="center">{row.status}</TableCell>
+                      <TableCell align="center">{row.status ? row.status : "INACTIVE"}</TableCell>
                       <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                       <TableCell align="center">
                         <Box display="flex" justifyContent={'center'}>
