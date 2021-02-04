@@ -7,6 +7,7 @@ const StatusChart = props => {
   return (
     <div>
       <Line
+        height={100}
         data={data}
         options={{
           title:{

@@ -220,7 +220,7 @@ export default function EnhancedTable (props) {
                       </TableCell>
                       <TableCell align="center">{row.serial}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.group.name}</TableCell>
+                      <TableCell align="center">{row.group && row.group.name ? row.group.name : ""}</TableCell>
                       {row.event === 'OK' ?
                         <TableCell align="center">{row.event}</TableCell> :
                         <TableCell align="center">

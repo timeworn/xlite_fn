@@ -149,6 +149,7 @@ export default function ScheduleDate (props) {
               <Grid item xs>
                 <Slider
                   onChange={handleSliderChange}
+                  step={10}
                   aria-labelledby="input-slider"
                   color="secondary"
                   value={dimValue}
@@ -162,7 +163,7 @@ export default function ScheduleDate (props) {
                   onBlur={handleBlur}
                   value={dimValue}
                   inputProps={{
-                    step: 1,
+                    step: 10,
                     min: 0,
                     max: 100,
                     type: 'number',

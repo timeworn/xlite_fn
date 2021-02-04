@@ -21,6 +21,7 @@ import {
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import { StatusBullet } from 'components';
+import { timeSince } from 'common/util';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -104,7 +105,7 @@ const DeviceEvents = props => {
                         {item.event}
                       </div>
                     </TableCell>
-                    <TableCell>5 minutes ago</TableCell>
+                    <TableCell>{timeSince(item.last_connected)} ago</TableCell>
                     <TableCell>{moment(item.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                   </TableRow>
                 ))}

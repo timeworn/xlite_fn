@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 'auto',
-    marginBottom: theme.spacing(3),
     background: 'transparent',
     '& .MuiCardHeader-action': {
       margin: 0

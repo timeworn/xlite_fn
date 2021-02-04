@@ -149,7 +149,7 @@ const GroupDetail = () => {
     DevicesService.instance.retrieveAll().then(devices => setAllDevices(devices));
   }, []);
   useEffect(() => {
-    setUnGroupDevices(allDevices.filter(item => item.group === null));
+    setUnGroupDevices(allDevices.filter(item => item.group === null || item.group.id === 0));
   }, [allDevices]);
 
   const handleGroupDelete = async () => {

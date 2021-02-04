@@ -62,9 +62,6 @@ export default function Devices () {
     filterId ? setFilteredData(data.filter(item => item.group.name === filterId)) : setFilteredData(data);
   }, [filterId])
 
-  console.log(filterId);
-  console.log(data);
-
   return (
     <div className={classes.root} id="screenshot">
       <Grid container spacing={4}>
