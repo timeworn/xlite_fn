@@ -45,7 +45,7 @@ export default function ScheduleDate (props) {
 
     const newCurrentData = {
       ...currentData,
-      'dim': currentData.dim.slice(0, currentData.dim.length - 1)
+      'dim': currentData.dim.slice(0, currentData.dim.length - 1).sort((a, b) => (a.time < b.time) ? -1 : 1)
     };
 
     const d = [...mainSchedule];
@@ -70,7 +70,7 @@ export default function ScheduleDate (props) {
       };
       const newCurrentData = {
         ...currentData,
-        'dim': [...currentData.dim, newSlot]
+        'dim': [...currentData.dim, newSlot].sort((a, b) => (a.time < b.time) ? -1 : 1)
       };
 
       const original = [...mainSchedule];
