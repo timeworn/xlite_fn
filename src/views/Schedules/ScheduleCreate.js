@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@material-ui/core/Box';
-import { Button, Grid, MenuItem, Select, TextField } from '@material-ui/core';
-import ScheduleDetailTitle from 'views/Schedules/components/ScheduleDetailTitle';
+import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
+import useStoreState from 'assets/js/use-store-state';
+import { Box, Button, Grid, MenuItem, Select, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import ScheduleDetailTitle from 'views/Schedules/components/ScheduleDetailTitle';
 import Switch from '@material-ui/core/Switch';
 import ScheduleSetting from 'views/Schedules/ScheduleSetting';
 import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 import { GroupsService } from 'core/services/groups.service';
 import { setSelectedSchedule } from 'store/actions/schedule';
 import { selectedMainSchedule, selectedSchedule } from 'store/selectors/schedule';
-import useStoreState from 'assets/js/use-store-state';
-import { useSelector } from 'react-redux';
 import { SchedulesService } from 'core/services/schedules.service';
 
 
@@ -42,6 +42,7 @@ const useStyle = makeStyles((theme) => ({
 
 export default function ScheduleCreate () {
 
+  const history = useHistory();
   const [statusValue, setStatusValue] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -68,7 +69,8 @@ export default function ScheduleCreate () {
     }
     SchedulesService.instance.createSchedule(currentSchedule).then(() => {
       setSuccess(true);
-      setTimeout(() => setSuccess(false), 2000);
+      setTimeout(() => setSuccess(false), 4000);
+      history.push("/schedules");
     }).catch(() => {
       setError(true);
       setTimeout(() => setError(false), 2000);
