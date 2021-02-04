@@ -63,10 +63,13 @@ export default function ScheduleCreate () {
     if (index === 0) {
       return;
     }
-    SchedulesService.instance.createSchedule(currentSchedule).then(createdData => {
+    if (!currentSchedule.name || !(currentSchedule.group && currentSchedule.group.id)) {
+      return;
+    }
+    SchedulesService.instance.createSchedule(currentSchedule).then(() => {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
-    }).catch(error => {
+    }).catch(() => {
       setError(true);
       setTimeout(() => setError(false), 2000);
     });
