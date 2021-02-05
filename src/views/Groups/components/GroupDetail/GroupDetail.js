@@ -243,7 +243,7 @@ const GroupDetail = () => {
           </Select>
           <div className={classes.confirmPart}>
             <Button variant="contained" color="primary" className={classes.confirmBtn} onClick={handleConfirm}>
-              Confirm
+              Add
             </Button>
           </div>
         </Grid>
