@@ -12,6 +12,7 @@ import { selectedMainSchedule, selectedSchedule } from 'store/selectors/schedule
 import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 import useStoreState from 'assets/js/use-store-state';
 import { useSelector } from 'react-redux';
+import * as moment from 'moment';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -77,10 +78,10 @@ export default function ScheduleDetail () {
     if (!currentSchedule.id) {
       return;
     }
-    SchedulesService.instance.updateSchedule(currentSchedule).then(updatedData => {
+    SchedulesService.instance.updateSchedule(currentSchedule).then(() => {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
-    }).catch(error => {
+    }).catch(() => {
       setError(true);
       setTimeout(() => setError(false), 2000);
     });
@@ -117,12 +118,14 @@ export default function ScheduleDetail () {
 
   const handleUpdate = () => {
     setUpdated(!updated);
+    const currentTime = moment(new Date()).format('YYYY-MM-DD\\THH:mm');
     const schedule = {
       'schedule': scheduleInfo
     };
     setCurrentSchedule({
       ...currentSchedule,
-      'schedule': JSON.stringify(schedule)
+      'schedule': JSON.stringify(schedule),
+      'last_updated': currentTime
     });
   };
 

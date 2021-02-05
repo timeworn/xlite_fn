@@ -276,7 +276,7 @@ export default function ScheduleTable () {
                       <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">{row.group.name}</TableCell>
                       <TableCell align="center">{row.status ? row.status : "INACTIVE"}</TableCell>
-                      <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
+                      <TableCell align="center">{moment(row.last_updated).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
                       <TableCell align="center">
                         <Box display="flex" justifyContent={'center'}>
                           <IconButton aria-label="delete" className={classes.margin} onClick={() => handleEdit(row.id)}>
