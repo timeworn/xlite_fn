@@ -201,7 +201,8 @@ export default function ScheduleTable () {
     } else {
       let newDuplicatedInfo = Object.assign({}, selectedRowSchedule);
       newDuplicatedInfo.id = null;
-      newDuplicatedInfo.name = makeName(5);
+      // newDuplicatedInfo.name = makeName(5);
+      newDuplicatedInfo.name = selectedRowSchedule.name + "_duplicate";
       SchedulesService.instance.createSchedule(newDuplicatedInfo).then(createdData => {
         setData(data.concat(createdData));
         setSuccess(true);
