@@ -11,6 +11,7 @@ import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 const useStyle = makeStyles(() => ({
   root: {
     background: '#30373E',
+    fontFamily: 'Roboto',
     '& .MuiSlider-root': {
       color: '#4284ff'
     },

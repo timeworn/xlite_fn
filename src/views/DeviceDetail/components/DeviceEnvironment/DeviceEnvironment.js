@@ -16,6 +16,7 @@ const control_mode = ['MANUAL', 'AUTO', 'SCHEDULED'];
 const useStyle = makeStyles((theme) => ({
   root: {
     background: '#30373E',
+    fontFamily: 'Roboto',
     '& .MuiSlider-root': {
       color: '#4284ff'
     },
@@ -97,11 +98,11 @@ export default function DeviceEnvironment (props) {
   };
 
   const handleSaveInfo = () => {
-    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(result => {
+    DevicesService.instance.updateDevice(deviceInfo.id, deviceInfo).then(() => {
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
       })
-      .catch(error => {
+      .catch(() => {
         setError(true);
         setTimeout(() => setError(false), 2000);
       });
