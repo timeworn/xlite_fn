@@ -232,7 +232,7 @@ export default function EnhancedTable (props) {
                       }
                       <TableCell align="center">{row.current_dim}</TableCell>
                       <TableCell align="center">
-                        <Box color={row.status === "ONLINE" ? "#1CC88A" : "#36B9CC"}>
+                        <Box color={row.status === "ONLINE" ? "#1CC88A" : "#963c3c"}>
                           {row.status}
                         </Box>
                       </TableCell>

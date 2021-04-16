@@ -28,13 +28,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   logoImg: {
-    width: theme.spacing(8),
+    width: theme.spacing(16),
     height: theme.spacing(6),
     marginRight: theme.spacing(2),
     background: 'transparent'
   },
   title: {
-    color: '#546e7a'
+    color: 'white'
   }
 }));
 
@@ -52,14 +52,9 @@ const Topbar = props => {
       className={clsx(classes.root, className)}
     >
       <Toolbar>
-        <RouterLink to="/">
+      <RouterLink to="/">
           <div className={classes.logo}>
-            <img
-              alt="Logo"
-              className={classes.logoImg}
-              src="/images/logos/logo.png"
-            />
-            <h1 className={classes.title}>Xlite</h1>
+            <img alt="Logo" src="/images/logos/logo.png" className={classes.logoImg}/>
           </div>
         </RouterLink>
         <div className={classes.flexGrow}/>

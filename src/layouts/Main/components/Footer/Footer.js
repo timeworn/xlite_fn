@@ -26,12 +26,12 @@ const Footer = props => {
         {' '} Copyright @ {' '}
         <Link
           component="a"
-          href="/"
+          href="https://xvision.technology"
           target="_blank"
         >
-          Brand
+          XVISION Technology
         </Link>
-        . 2019
+        . 2021
       </Typography>
     </div>
   );
