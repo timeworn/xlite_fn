@@ -35,8 +35,8 @@ const histories =
     options: [
       {
         id: 'history1',
-        name: '1h',
-        title: '1hour'
+        name: '6h',
+        title: '6hour'
       },
       {
         id: 'history2',
@@ -83,7 +83,7 @@ export default function DeviceHistory (props) {
 
   switch (range) {
 
-    case '1h':
+    case '6h':
       interval = '1m';
       break;
 
@@ -123,21 +123,19 @@ export default function DeviceHistory (props) {
       datasets: [
         {
           label: dataTypes.options.find(o=>o.name === measureType).title,
-          fill: false,
+          fill: true,
           lineTension: 0.1,
-          backgroundColor: chart_color,
+          backgroundColor: 'rgba(32, 48, 74,0.5)',
           borderColor: chart_color,
-          borderCapStyle: 'butt',
-          borderJoinStyle: 'miter',
           pointBorderColor: chart_color,
           pointBackgroundColor: chart_color,
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
           pointHoverBackgroundColor: '#005ceb',
           pointHoverBorderColor: '#005ceb',
           pointHoverBorderWidth: 3,
-          pointRadius: 1,
+          pointRadius: 0,
           pointHitRadius: 10,
+          borderWidth:2,
+          pointBorderWidth:1,
           data: historyData && historyData.map(history => history.sensor[measureType])
         }
       ]

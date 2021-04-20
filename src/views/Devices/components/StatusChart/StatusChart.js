@@ -22,6 +22,12 @@ const StatusChart = props => {
           scales: {
             xAxes: [{
               type: 'time',
+            }],
+            yAxes:[{
+              ticks: {
+                beginAtZero: true,
+                min: 0
+              },
             }]
           }
         }}

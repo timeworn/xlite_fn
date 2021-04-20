@@ -8,7 +8,7 @@ import { setCurrentPos } from 'store/actions/device';
 import { v1 as uuIdv1 } from "uuid";
 
 const icon = {
-  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'
+  url: '/images/blue_dot.png'
 };
 
 const icon1 = {
@@ -46,7 +46,7 @@ const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
   }, [curPos]);
 
   return (
-    <GoogleMap defaultZoom={8} options={mapOptions}  onClick={e => setCurPos({
+    <GoogleMap defaultZoom={12} options={mapOptions}  onClick={e => setCurPos({
       lat: e.latLng.lat(),
       lng: e.latLng.lng()
     })} center={lastPos}>
