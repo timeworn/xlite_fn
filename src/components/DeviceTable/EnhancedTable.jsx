@@ -237,7 +237,7 @@ export default function EnhancedTable (props) {
                         </Box>
                       </TableCell>
                       <TableCell align="center">{row.control_mode}</TableCell>
-                      <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss')}</TableCell>
+                      <TableCell align="center">{moment(row.last_connected).format('YYYY.MM.DD hh:mm:ss a')}</TableCell>
                     </TableRow>
                   );
                 })}
