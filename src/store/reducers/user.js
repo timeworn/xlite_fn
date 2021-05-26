@@ -9,7 +9,7 @@ const initState = {
     address: '',
     id: 0,
     active: 0,
-    api_key: '',
+    apiKey: '',
     received: true,
     emailEnable: false
   }

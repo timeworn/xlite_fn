@@ -146,7 +146,7 @@ const Reports = () => {
               interval: freqVal,
               warning_only: checkedWarning ? 1 : 0
             },
-            api_key: user.api_key ? user.api_key : ''
+            api_Key: user.apiKey ? user.apiKey : ''
           }
         }),
         headers: {
