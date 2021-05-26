@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, TextField } from '@material-ui/core';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { makeStyles } from '@material-ui/styles';
 import { AuthService } from 'core/services/auth.service';
 import useStoreState from '../../../../assets/js/use-store-state';
 import { currentUser } from 'store/selectors/user';
@@ -22,6 +24,13 @@ const AccountDetails = props => {
   const [btnClicked, setBtnClicked] = useState(false);
   const classes = useStyles();
 
+  const handleEmailEnable = () => {
+    setUser({
+      ...user,
+      emailEnable: !user.emailEnable
+    });
+  };
+
   const handleChange = (event) => {
     setUser({
       ...user,
@@ -34,11 +43,12 @@ const AccountDetails = props => {
     AuthService.instance.updateProfile({
       email: user.email,
       name: user.name,
-      address: user.address
+      address: user.address,
+      emailEnable: user.emailEnable
     }).then(updatedUser => {
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 2000);
-    })
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      })
       .catch(error => {
         setError(true);
         setTimeout(() => setError(false), 2000);
@@ -60,7 +70,7 @@ const AccountDetails = props => {
           subheader="The information can be edited"
           title="Profile"
         />
-        <Divider/>
+        <Divider />
         <CardContent>
           <Grid
             container
@@ -116,9 +126,22 @@ const AccountDetails = props => {
                 variant="outlined"
               />
             </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="emailEnable"
+                    checked={user.emailEnable}
+                    onChange={handleEmailEnable}
+                    color="secondary"
+                  />
+                }
+                label="Receive System Eamil"
+              />
+            </Grid>
           </Grid>
         </CardContent>
-        <Divider/>
+        <Divider />
         <CardActions>
           <Button
             color="primary"
@@ -130,8 +153,8 @@ const AccountDetails = props => {
           </Button>
         </CardActions>
       </form>
-      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!"/> : ''}
-      {error ? <CustomizedSnackbars variant="error" message="Failed"/> : ''}
+      {success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}
+      {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
     </Card>
   );
 };
