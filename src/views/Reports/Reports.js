@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/styles';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import PageHeader from '../../layouts/Main/components/PageHeader/PageHeader';
-import SelectionHeader from '../../components/SectionHeader/SectionHeader';
+import uuid from 'uuid/v1';
+import * as moment from 'moment';
+import useStoreState from 'assets/js/use-store-state';
+import { currentUser } from 'store/selectors/user';
+import { setCurrentUser } from 'store/actions/user';
+import { makeStyles } from '@material-ui/styles';
 import { Dialog, DialogActions, DialogContent, DialogContentText, Grid, MenuItem, Select } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import uuid from 'uuid/v1';
-import SelectRange from '../Devices/components/SelectRange/SelectRange';
-import * as moment from 'moment';
-import { DevicesService } from '../../core/services/devices.service';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { reportUrl } from '../Devices/data';
 import { GetApp } from '@material-ui/icons';
+import PageHeader from '../../layouts/Main/components/PageHeader/PageHeader';
+import SelectionHeader from '../../components/SectionHeader/SectionHeader';
+import SelectRange from '../Devices/components/SelectRange/SelectRange';
+import { DevicesService } from '../../core/services/devices.service';
+import { reportUrl } from '../Devices/data';
 import CustomizedSnackbars from '../../components/SnackbarWrapper/SnackbarWrapper';
 
 const useStyles = makeStyles((theme) => ({
@@ -88,10 +91,21 @@ const Reports = () => {
   const hourValue = Math.abs(timezone) < 10 ? '0' + Math.abs(timezone) : Math.abs(timezone);
   const finalTimezone = symbol + hourValue + ':00';
 
+  const [user, setUser] = useStoreState(currentUser, setCurrentUser);
   const [open, setOpen] = useState(false);
   const [resultUrl, setResultUrl] = useState('');
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState('');
+  const [data, setData] = useState([]);
+  const [deviceVal, setDeviceVal] = useState('');
+  let [fromTime, setFromTime] = useState(moment(new Date(currentDate.getTime() - 60 * 60 * 1000)).format('YYYY-MM-DD\\THH:mm'));
+  const [toTime, setToTime] = useState(moment(currentDate).format('YYYY-MM-DD\\THH:mm'));
+  const [freqVal, setFreqVal] = useState('');
+  const [checkedWarning, setCheckedWarning] = useState(false);
+  const [historyData, setHistoryData] = useState([]);
+  const [gettingInfo, setGettingInfo] = useState(false);
+  const [generated, setGenerated] = useState(false);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -104,16 +118,6 @@ const Reports = () => {
     }, 100);
     setOpen(false);
   };
-
-  const [data, setData] = useState([]);
-  const [deviceVal, setDeviceVal] = useState('');
-  let [fromTime, setFromTime] = useState(moment(new Date(currentDate.getTime() - 60 * 60 * 1000)).format('YYYY-MM-DD\\THH:mm'));
-  const [toTime, setToTime] = useState(moment(currentDate).format('YYYY-MM-DD\\THH:mm'));
-  const [freqVal, setFreqVal] = useState('');
-  const [checkedWarning, setCheckedWarning] = useState(false);
-  const [historyData, setHistoryData] = useState([]);
-  const [gettingInfo, setGettingInfo] = useState(false);
-  const [generated, setGenerated] = useState(false);
 
   const handleDeviceChange = (event) => {
     setDeviceVal(event.target.value);
@@ -139,8 +143,10 @@ const Reports = () => {
               dev_serial: deviceVal,
               time_from: fromTime + finalTimezone,
               time_to: toTime + finalTimezone,
-              interval: freqVal
-            }
+              interval: freqVal,
+              warning_only: checkedWarning ? 1 : 0
+            },
+            api_Key: user.apiKey ? user.apiKey : ''
           }
         }),
         headers: {
@@ -165,7 +171,7 @@ const Reports = () => {
     }
   };
 
-  function exportPdf() {
+  function exportPdf () {
     const unit = 'pt';
     const size = 'A4'; // Use A1, A2, A3 or A4
     const orientation = 'landscape'; // portrait or landscape
@@ -196,8 +202,8 @@ const Reports = () => {
 
   return (
     <div className={classes.root} id="screenshot">
-      <PageHeader name="Reports" className={classes.pageHeader}/>
-      <SelectionHeader title='Generate reports' className={classes.sectionHeader} align={"left"}/>
+      <PageHeader name="Reports" className={classes.pageHeader} />
+      <SelectionHeader title='Generate reports' className={classes.sectionHeader} align={'left'} />
       <div className={classes.halfPage}>
         <Grid container>
           <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -241,7 +247,7 @@ const Reports = () => {
             </Select>
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <SelectRange fromTime={fromTime} setFromTime={setFromTime} toTime={toTime} setToTime={setToTime}/>
+            <SelectRange fromTime={fromTime} setFromTime={setFromTime} toTime={toTime} setToTime={setToTime} />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <FormControlLabel
@@ -250,7 +256,7 @@ const Reports = () => {
                   checked={checkedWarning}
                   onChange={handelChange}
                   value="checkedWarning"
-                  color="primary"
+                  color="secondary"
                 />
               }
               label="Only show warning?"
@@ -260,7 +266,7 @@ const Reports = () => {
         </Grid>
         <Grid item lg={3} md={3} xl={6} xs={12}>
           <Button variant="contained" color="primary" className={classes.generateBtn} onClick={handleGenerate}
-                  disabled={gettingInfo}>
+            disabled={gettingInfo}>
             Generate
           </Button>
           {historyData.length !== 0 ?
@@ -279,7 +285,7 @@ const Reports = () => {
             className={classes.button}
             onClick={handleDownload}
           >
-            <GetApp/> Download now
+            <GetApp /> Download now
           </Button>
         </DialogContent>
         <DialogActions>
@@ -288,7 +294,7 @@ const Reports = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {error ? <CustomizedSnackbars variant="error" message={errorText}/> : ''}
+      {error ? <CustomizedSnackbars variant="error" message={errorText} /> : ''}
     </div>
   );
 };
