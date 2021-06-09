@@ -10,7 +10,8 @@ class Configuration {
   GROUPS_URL = `${process.env.REACT_APP_API_URL}/groups`;
   CREATE_GROUP_URL = `${process.env.REACT_APP_API_URL}/groups/create`;
   SCHEDULES_URL = `${process.env.REACT_APP_API_URL}/schedules`;
-
+  SERVICES_URL = `${process.env.REACT_APP_API_URL}/users/services`;
+  ORGANIZATIONS_URL = `${process.env.REACT_APP_API_URL}/organizations`;
   static instance = new Configuration();
 }
 

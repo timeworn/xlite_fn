@@ -12,7 +12,9 @@ const initState = {
     apiKey: '',
     received: true,
     emailEnable: false
-  }
+  },
+  services: [],
+  selectedService: {}
 };
 
 export default (state = initState, action) => {
@@ -22,6 +24,10 @@ export default (state = initState, action) => {
     case UserActionTypes.SET_LOGIN_DATA:
       localStorage.setItem('accessToken', JSON.stringify(action.loginData));
       return { ...state, loginData: action.loginData };
+    case UserActionTypes.SET_SERVICES:
+      return { ...state, services: action.user}
+    case UserActionTypes.SET_SELECTEDSERVICE:
+      return { ...state, selectedService: action.user}
     default:
       return state;
   }
