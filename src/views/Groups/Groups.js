@@ -9,6 +9,9 @@ import GroupDetail from './components/GroupDetail';
 import { GroupsService } from '../../core/services/groups.service';
 import CustomizedSnackbars from '../../components/SnackbarWrapper/SnackbarWrapper';
 import { setAllGroup } from '../../store/actions/group';
+import useStoreState from 'assets/js/use-store-state';
+import { selectDecideAdmin } from 'store/selectors/user';
+import { ActionSetDecideAdmin } from 'store/actions/user';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +38,7 @@ const Groups = () => {
   const [note, setNote] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [adminRole, setAdminRole] = useStoreState(selectDecideAdmin, ActionSetDecideAdmin);
 
   let [allGroups, setAllGroups] = useState([]);
 
@@ -83,14 +87,14 @@ const Groups = () => {
         <Grid item lg={6} md={6} xl={6} xs={12}>
           <SelectionHeader title='Group' align={'left'} />
           <GroupTable />
-          <Button variant="contained" color="primary" className={classes.newBtn} onClick={handleClickOpen}>
+          {adminRole ? <Button variant="contained" color="primary" className={classes.newBtn} onClick={handleClickOpen}>
             New Group
-          </Button>
+          </Button> : ''}
         </Grid>
-        <Grid item lg={6} md={6} xl={6} xs={12}>
+        {adminRole ? <Grid item lg={6} md={6} xl={6} xs={12}>
           <SelectionHeader title='Edit group' align={'left'} />
           <GroupDetail />
-        </Grid>
+        </Grid> : ''}
       </Grid>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Create Group</DialogTitle>
