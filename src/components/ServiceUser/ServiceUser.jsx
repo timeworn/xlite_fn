@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ActionSetSelectedService } from 'store/actions/user';
+import { selectService } from 'store/selectors/user';
 import Typography from '@material-ui/core/Typography';
 import { Grid, MenuItem, Select, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/styles';
 import useStoreState from 'assets/js/use-store-state';
-import { selectService } from 'store/selectors/user';
-import { ActionSetSelectedService } from 'store/actions/user';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { UserService } from 'core/services/user.service';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   groupText: {
-    marginLeft: theme.spacing(2)
+    marginLeft: theme.spacing(2),
+    '& .MuiInputBase-root.Mui-disabled': {
+      color: 'white'
+    }
   },
   selectEmpty: {
     width: '100%',
@@ -51,8 +60,60 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ServiceUser () {
   const [selected, setSelected] = useStoreState(selectService, ActionSetSelectedService);
+  const [allGroups, setAllGroups] = useState([]);
+  const [freeGroups, setFreeGroups] = useState([]);
+  const [opval, setOpval] = useState(0);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+
+        const data = await UserService.instance.retrieveUserGroups();
+        setAllGroups(data);
+        setFreeGroups(data);
+
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    load();
+  }, []);
+
+  useEffect(() => {
+    setFreeGroups(allGroups.filter(item => !selected.userGroups.some(group => group.id === item.id)));
+  }, [selected]);
 
   const classes = useStyles();
+
+  const handleNameChange = (event) => {
+    setSelected({
+      ...selected,
+      name: event.target.value
+    });
+  };
+
+  const handleChange = (event) => {
+    setOpval(event.target.value);
+  };
+
+  const handleDelete = (item) => {
+    setSelected({
+      ...selected,
+      userGroups: selected.userGroups.filter(group => group.id !== item.id)
+    });
+  };
+
+  const handleAddGroup = () => {
+    const newGroup = allGroups.filter(group => group.id === opval)[0];
+    delete newGroup['users'];
+    setSelected({
+      ...selected,
+      userGroups: [...selected.userGroups, newGroup].sort(function(a, b) {
+        return a.id - b.id;
+      })
+    });
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.groupName}>
@@ -60,7 +121,7 @@ export default function ServiceUser () {
           <Typography variant="h5">
             Email(read only)
           </Typography>
-          <TextField name="name" variant='outlined' size="small" className={classes.groupText} value={selected.email} />
+          <TextField name="name" variant='outlined' size="small" className={classes.groupText} inputProps={{ readOnly: true }} value={selected ? selected.email : ''} />
         </div>
         <Button variant="contained" color="primary" className={classes.groupDelBtn}>
           Delete This User
@@ -70,7 +131,7 @@ export default function ServiceUser () {
         <Typography variant="h5">
           Name
         </Typography>
-        <TextField name="note" variant='outlined' size="small" fullWidth className={classes.noteText} />
+        <TextField name="note" variant='outlined' size="small" className={classes.noteText} value={selected.name} onChange={handleNameChange} />
       </div>
       <Grid container spacing={4}>
         <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -78,19 +139,19 @@ export default function ServiceUser () {
             Group list
           </Typography>
           <List className={classes.list}>
-            {/*{selectedDevices.map((item, key) => {*/}
-            {/*  const labelId = `checkbox-list-label-${key}`;*/}
-            {/*  return (*/}
-            {/*    <ListItem key={key} role={undefined} dense button>*/}
-            {/*      <ListItemText id={labelId} primary={item.name} />*/}
-            {/*      <ListItemSecondaryAction>*/}
-            {/*        <IconButton className="delIcon" aria-label="delete" onClick={() => handleDelete(item)}>*/}
-            {/*          <DeleteIcon color="secondary" />*/}
-            {/*        </IconButton>*/}
-            {/*      </ListItemSecondaryAction>*/}
-            {/*    </ListItem>*/}
-            {/*  );*/}
-            {/*})}*/}
+            {selected.userGroups ? selected.userGroups.map((item, key) => {
+              const labelId = `checkbox-list-label-${key}`;
+              return (
+                <ListItem key={key} role={undefined} dense button>
+                  <ListItemText id={labelId} primary={item.name} />
+                  <ListItemSecondaryAction>
+                    <IconButton className="delIcon" aria-label="delete" onClick={() => handleDelete(item)}>
+                      <DeleteIcon color="secondary" />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              );
+            }) : ''}
           </List>
         </Grid>
         <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -98,27 +159,25 @@ export default function ServiceUser () {
             Add group to this user
           </Typography>
           <Select
-            displayEmpty
             name="val"
             className={classes.selectEmpty}
             variant="outlined"
             size="small"
+            value={opval}
+            onChange={handleChange}
           >
-            <MenuItem value="" selected>Select Device</MenuItem>
-            {/*{unGroupDevices.map((item, key) =>*/}
-            {/*  (<MenuItem key={key} value={item.name}>{item.name}</MenuItem>)*/}
-            {/*)}*/}
+            <MenuItem value={0} selected>Select Device</MenuItem>
+            {freeGroups ? freeGroups.map((item, key) =>
+              (<MenuItem key={key} value={item.id}>{item.name}</MenuItem>)
+            ) : ''}
           </Select>
           <div className={classes.confirmPart}>
-            <Button variant="contained" color="primary" className={classes.confirmBtn}>
+            <Button variant="contained" color="primary" className={classes.confirmBtn} onClick={handleAddGroup}>
               Add
             </Button>
           </div>
         </Grid>
       </Grid>
-      {/*{deleted ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}*/}
-      {/*{success ? <CustomizedSnackbars variant="success" message="Successfully updated!" /> : ''}*/}
-      {/*{error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}*/}
     </div>
   );
 }

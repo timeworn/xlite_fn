@@ -8,12 +8,12 @@ export class AuthService extends CoreService {
   static instance = new AuthService();
   isLoggedIn$;
 
-  constructor() {
+  constructor () {
     super();
     this.isLoggedIn$ = new BehaviorSubject(localStorage.getItem('accessToken') !== null);
   }
 
-  async login(email, password) {
+  async login (email, password) {
     const authResult = await this.axiosDataResolver(await axios.post(this.configuration.LOGIN_URL, {
       email,
       password
@@ -24,7 +24,7 @@ export class AuthService extends CoreService {
     return authResult;
   }
 
-  async register(name, email, password) {
+  async register (name, email, password) {
     const registerResult = await this.axiosDataResolver(await axios.post(this.configuration.REGISTER_URL, {
       name,
       email,
@@ -36,24 +36,24 @@ export class AuthService extends CoreService {
     return registerResult;
   }
 
-  async getProfile() {
+  async getProfile () {
     return this.axiosDataResolver(await axios.get(this.configuration.PROFILE_URL));
   }
 
-  async updateProfile(data) {
+  async updateProfile (data) {
     return this.axiosDataResolver(await axios.put(this.configuration.AUTH_URL, data));
   }
 
-  async changePassword(data) {
+  async changePassword (data) {
     return this.axiosDataResolver(await axios.post(this.configuration.CHANGE_PASSWORD__URL, data));
   }
 
-  logout() {
+  logout () {
     localStorage.removeItem('accessToken');
     this.isLoggedIn$.next(false);
   }
 
-  axiosDataResolver(axiosData) {
+  axiosDataResolver (axiosData) {
     return new Promise(resolve => resolve(axiosData.data));
   }
 }

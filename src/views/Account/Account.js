@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
 const Account = () => {
   const classes = useStyles();
   const [decideAdmin, setDecideAdmin] = useState(false);
-  const [user, setUser] = useStoreState(currentUser, setCurrentUser);
   const [orgServices, setOrgServices] = useStoreState(selectServices, ActionSetServices);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ const Account = () => {
 
         if (orgInfo.length === 1) {
           const data = await UserService.instance.retrieveServices();
-          console.log(data);
           setOrgServices(data);
         }
       } catch (e) {

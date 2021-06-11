@@ -6,11 +6,19 @@ export class UserService extends CoreService {
 
   static instance = new UserService();
 
-  async retrieveServices() {
-    return this.axiosDataResolver(await axios.get(this.configuration.SERVICES_URL, {}));
+  async retrieveServices () {
+    return this.axiosDataResolver(await axios.get(this.configuration.SERVICES_URL + '/services', {}));
   }
 
-  axiosDataResolver(axiosData) {
+  async updateServiceProfile (serviceId, data) {
+    return this.axiosDataResolver(await axios.post(this.configuration.SERVICES_URL + '/' + serviceId + '/groups', data));
+  }
+
+  async retrieveUserGroups () {
+    return this.axiosDataResolver(await axios.get(this.configuration.USERGROUPS_URL, {}));
+  }
+
+  axiosDataResolver (axiosData) {
     return new Promise(resolve => resolve(axiosData.data));
   }
 }

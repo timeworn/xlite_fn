@@ -124,8 +124,6 @@ export default function UserTable () {
     setOrderBy(property);
   };
 
-  console.log(selected);
-
   const handleClick = (event, row) => {
     setSelected(row.name);
     dispatch(ActionSetSelectedService(row));

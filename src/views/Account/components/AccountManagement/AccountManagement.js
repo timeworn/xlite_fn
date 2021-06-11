@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import { AuthService } from 'core/services/auth.service';
 import useStoreState from '../../../../assets/js/use-store-state';
-import { currentUser } from 'store/selectors/user';
-import { setCurrentUser } from 'store/actions/user';
+import { currentUser, selectService } from 'store/selectors/user';
+import { UserService } from 'core/services/user.service';
+import { ActionSetSelectedService, setCurrentUser } from 'store/actions/user';
 import CustomizedSnackbars from '../../../../components/SnackbarWrapper/SnackbarWrapper';
 import UserTable from 'components/UserTable/UserTable';
 import ServiceUser from 'components/ServiceUser/ServiceUser';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -19,17 +19,11 @@ const AccountManagement = props => {
   const { className, ...rest } = props;
 
   const [user, setUser] = useStoreState(currentUser, setCurrentUser);
+  const [selected, setSelected] = useStoreState(selectService, ActionSetSelectedService);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [btnClicked, setBtnClicked] = useState(false);
   const classes = useStyles();
-
-  const handleEmailEnable = () => {
-    setUser({
-      ...user,
-      emailEnable: !user.emailEnable
-    });
-  };
 
   const handleChange = (event) => {
     setUser({
@@ -40,11 +34,9 @@ const AccountManagement = props => {
 
   const handleDetail = () => {
     setBtnClicked(true);
-    AuthService.instance.updateProfile({
-      email: user.email,
-      name: user.name,
-      address: user.address,
-      emailEnable: user.emailEnable
+    UserService.instance.updateServiceProfile(selected.id, {
+      name: selected.name,
+      groups: selected.userGroups.map(item => item.id)
     }).then(updatedUser => {
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
