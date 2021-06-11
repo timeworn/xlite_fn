@@ -1,8 +1,9 @@
 import { UserActionTypes } from 'store/actions/user';
-const loginData = localStorage.getItem("accessToken");
+
+const loginData = localStorage.getItem('accessToken');
 
 const initState = {
-  loginData: (loginData && JSON.parse(loginData)) || "",
+  loginData: (loginData && JSON.parse(loginData)) || '',
   currentUser: {
     email: '',
     name: '',
@@ -14,7 +15,8 @@ const initState = {
     emailEnable: false
   },
   services: [],
-  selectedService: {}
+  selectedService: {},
+  decideAdmin: false
 };
 
 export default (state = initState, action) => {
@@ -25,9 +27,11 @@ export default (state = initState, action) => {
       localStorage.setItem('accessToken', JSON.stringify(action.loginData));
       return { ...state, loginData: action.loginData };
     case UserActionTypes.SET_SERVICES:
-      return { ...state, services: action.user}
+      return { ...state, services: action.user };
     case UserActionTypes.SET_SELECTEDSERVICE:
-      return { ...state, selectedService: action.user}
+      return { ...state, selectedService: action.user };
+    case UserActionTypes.SET_DECIDEADMIN:
+      return { ...state, decideAdmin: action.user };
     default:
       return state;
   }

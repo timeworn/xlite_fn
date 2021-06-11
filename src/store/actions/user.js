@@ -2,11 +2,17 @@ export const UserActionTypes = {
   SET_CURRENTUSER_INFO: 'SET_CURRENTUSER_INFO',
   SET_LOGIN_DATA: 'SET_LOGIN_DATA',
   SET_SERVICES: 'SET_SERVICES',
-  SET_SELECTEDSERVICE: 'SET_SELECTEDSERVICE'
+  SET_SELECTEDSERVICE: 'SET_SELECTEDSERVICE',
+  SET_DECIDEADMIN: 'SET_DECIDEADMIN'
 };
 
 export const setCurrentUser = (user) => ({
   type: UserActionTypes.SET_CURRENTUSER_INFO,
+  user
+});
+
+export const ActionSetDecideAdmin = (user) => ({
+  type: UserActionTypes.SET_DECIDEADMIN,
   user
 });
 

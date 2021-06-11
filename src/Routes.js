@@ -7,12 +7,12 @@ import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import {
   Account as AccountView,
   Dashboard as DashboardView,
-  Devices as DevicesView,
   DeviceDetail as DeviceDetailView,
+  Devices as DevicesView,
   Groups as GroupsView,
-  Schedules as SchedulesView,
   NotFound as NotFoundView,
   Reports as ReportsView,
+  Schedules as SchedulesView,
   Settings as SettingsView,
   SignIn as SignInView,
   SignUp as SignUpView
@@ -22,12 +22,29 @@ import ScheduleCreate from './views/Schedules/ScheduleCreate';
 import ScheduleDetail from 'views/Schedules/ScheduleDetail';
 import { AuthService } from 'core/services/auth.service';
 import LogoutView from './views/Logout';
+import { useDispatch } from 'react-redux';
+import { OrganizationsService } from 'core/services/organizations.service';
+import { ActionSetDecideAdmin } from 'store/actions/user';
 
 const Routes = () => {
+  const dispatch = useDispatch();
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('accessToken') !== null);
+  const [decideAdmin, setDecideAdmin] = useState(false);
   useEffect(() => {
+    OrganizationsService.instance.retriveInfo().then(info => {
+      if (info.length === 1) {
+        setDecideAdmin(true);
+      }
+    });
     AuthService.instance.isLoggedIn$.subscribe(res => setLoggedIn(res));
   }, []);
+
+  useEffect(() => {
+    if (decideAdmin) {
+      dispatch(ActionSetDecideAdmin(true));
+    }
+  }, [decideAdmin]);
+
   return (
     <Switch>
       <RouteWithLayout
@@ -117,8 +134,8 @@ const Routes = () => {
         path="/not-found"
         isAuth={false}
       />
-      <Redirect to={'/dashboard'} from={'/'}/>
-      <Redirect to="/not-found"/>
+      <Redirect to={'/dashboard'} from={'/'} />
+      <Redirect to="/not-found" />
     </Switch>
   );
 };

@@ -5,4 +5,4 @@ export const selectIsLoggedIn = state => {
 
 export const selectServices = state => state.user.services;
 export const selectService = state => state.user.selectedService;
-
+export const selectDecideAdmin = state => state.user.decideAdmin;
