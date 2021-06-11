@@ -13,6 +13,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { UserService } from 'core/services/user.service';
+import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +65,9 @@ export default function ServiceUser () {
   const [freeGroups, setFreeGroups] = useState([]);
   const [opval, setOpval] = useState(0);
 
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -114,6 +118,19 @@ export default function ServiceUser () {
     });
   };
 
+  const handleUserDelete = () => {
+    if (selected.id) {
+      UserService.instance.removeService(selected.id).then(() => {
+          setSuccess(true);
+          setTimeout(() => setSuccess(false), 2000);
+        })
+        .catch(() => {
+          setError(true);
+          setTimeout(() => setError(false), 2000);
+        });
+    }
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.groupName}>
@@ -123,7 +140,7 @@ export default function ServiceUser () {
           </Typography>
           <TextField name="name" variant='outlined' size="small" className={classes.groupText} inputProps={{ readOnly: true }} value={selected ? selected.email : ''} />
         </div>
-        <Button variant="contained" color="primary" className={classes.groupDelBtn}>
+        <Button variant="contained" color="primary" className={classes.groupDelBtn} onClick={handleUserDelete}>
           Delete This User
         </Button>
       </div>
@@ -176,6 +193,8 @@ export default function ServiceUser () {
               Add
             </Button>
           </div>
+          {success ? <CustomizedSnackbars variant="success" message="Successfully deleted!" /> : ''}
+          {error ? <CustomizedSnackbars variant="error" message="Failed" /> : ''}
         </Grid>
       </Grid>
     </div>

@@ -14,6 +14,10 @@ export class UserService extends CoreService {
     return this.axiosDataResolver(await axios.post(this.configuration.SERVICES_URL + '/' + serviceId + '/groups', data));
   }
 
+  async removeService(id) {
+    return this.axiosDataResolver(await axios.delete(this.configuration.SERVICES_URL + '/' + id));
+  }
+
   async retrieveUserGroups () {
     return this.axiosDataResolver(await axios.get(this.configuration.USERGROUPS_URL, {}));
   }
