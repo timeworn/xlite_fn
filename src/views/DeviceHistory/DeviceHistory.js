@@ -7,6 +7,9 @@ import { setDeviceHistory } from 'store/actions/device';
 import { useDispatch, useSelector } from 'react-redux';
 import { deviceHistory } from 'store/selectors/device';
 import StatusChart from 'views/Devices/components/StatusChart/StatusChart';
+import useStoreState from 'assets/js/use-store-state';
+import { currentUser } from 'store/selectors/user';
+import { setCurrentUser } from 'store/actions/user';
 
 const dataTypes = {
   title: 'Select Data Type',
@@ -25,6 +28,16 @@ const dataTypes = {
       id: 'light',
       name: 'light',
       title: 'light'
+    },
+    {
+      id: 'analog_1',
+      name: 'analog_1',
+      title: 'analog_1'
+    },
+    {
+      id: 'analog_2',
+      name: 'analog_2',
+      title: 'analog_2'
     }
   ]
 };
@@ -66,6 +79,7 @@ export default function DeviceHistory (props) {
   const dispatch = useDispatch();
 
   const [range, setRange] = useState('1d');
+  const [user, setUser] = useStoreState(currentUser, setCurrentUser);
   const [measureType, setMeasureType] = useState('power');
   const [statusValue, setStatusValue] = useState({});
 
@@ -82,7 +96,7 @@ export default function DeviceHistory (props) {
           backgroundColor: '#3f51b5',
           borderColor: 'grey',
           borderWidth: 1,
-          data: historyData && historyData.map(history => history[measureType])
+          data: historyData && historyData.map(history => history['sensor'][measureType])
         }
       ]
     });
@@ -98,7 +112,8 @@ export default function DeviceHistory (props) {
             time_from: 'now-' + range,
             time_to: 'now',
             interval: '2h'
-          }
+          },
+          api_Key: user.apiKey ? user.apiKey : ''
         }
       }),
       headers: {

@@ -173,7 +173,7 @@ export default function UserTable () {
                       selected={isItemSelected}
                     >
                       <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">{row.userGroups.length}</TableCell>
+                      <TableCell align="center">{row.groups ? row.groups.length : 0}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
                     </TableRow>
                   );

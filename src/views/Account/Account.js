@@ -30,10 +30,8 @@ const Account = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        if (adminRole) {
-          const data = await UserService.instance.retrieveServices();
-          setOrgServices(data);
-        }
+        const data = await UserService.instance.retrieveServices();
+        setOrgServices(data);
       } catch (e) {
         console.log(e);
       }

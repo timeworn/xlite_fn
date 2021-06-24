@@ -22,6 +22,10 @@ export class UserService extends CoreService {
     return this.axiosDataResolver(await axios.get(this.configuration.USERGROUPS_URL, {}));
   }
 
+  async retrieveDeviceGroups (id) {
+    return this.axiosDataResolver(await axios.get(this.configuration.SERVICES_URL + '/' + id + '/groups', {}));
+  }
+
   axiosDataResolver (axiosData) {
     return new Promise(resolve => resolve(axiosData.data));
   }

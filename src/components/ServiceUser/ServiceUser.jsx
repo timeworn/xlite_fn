@@ -14,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { UserService } from 'core/services/user.service';
 import CustomizedSnackbars from 'components/SnackbarWrapper/SnackbarWrapper';
+import { GroupsService } from 'core/services/groups.service';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,11 +72,9 @@ export default function ServiceUser () {
   useEffect(() => {
     const load = async () => {
       try {
-
-        const data = await UserService.instance.retrieveUserGroups();
+        const data = await GroupsService.instance.retrieveAll();
         setAllGroups(data);
         setFreeGroups(data);
-
       } catch (e) {
         console.log(e);
       }
@@ -84,7 +83,7 @@ export default function ServiceUser () {
   }, []);
 
   useEffect(() => {
-    setFreeGroups(allGroups.filter(item => !selected.userGroups.some(group => group.id === item.id)));
+    setFreeGroups(allGroups.filter(item => !selected.groups.some(group => group.id === item.id)));
   }, [selected]);
 
   const classes = useStyles();
@@ -103,7 +102,7 @@ export default function ServiceUser () {
   const handleDelete = (item) => {
     setSelected({
       ...selected,
-      userGroups: selected.userGroups.filter(group => group.id !== item.id)
+      groups: selected.groups.filter(group => group.id !== item.id)
     });
   };
 
@@ -112,7 +111,7 @@ export default function ServiceUser () {
     delete newGroup['users'];
     setSelected({
       ...selected,
-      userGroups: [...selected.userGroups, newGroup].sort(function(a, b) {
+      groups: [...selected.groups, newGroup].sort(function(a, b) {
         return a.id - b.id;
       })
     });
@@ -156,7 +155,7 @@ export default function ServiceUser () {
             Group list
           </Typography>
           <List className={classes.list}>
-            {selected.userGroups ? selected.userGroups.map((item, key) => {
+            {selected.groups ? selected.groups.map((item, key) => {
               const labelId = `checkbox-list-label-${key}`;
               return (
                 <ListItem key={key} role={undefined} dense button>

@@ -12,6 +12,7 @@ import DeviceEnvironment from 'views/DeviceDetail/components/DeviceEnvironment/D
 import DevicePosition from 'views/DeviceDetail/components/DevicePosition/DevicePosition';
 import DeviceHistory from 'views/DeviceHistory/DeviceHistory';
 import ShelterMap from 'views/Devices/components/MapContainer/MapContainer';
+import LatestHistory from 'views/DeviceDetail/components/LatestHistory/LatestHistory';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,6 +77,7 @@ export default function DeviceDetail () {
           {detailInfo.length ? <DeviceDetailTitle title={detailInfo[0].name} serial={detailInfo[0].serial} /> : ''}
         </Grid>
         <Grid item md={8} xs={12}>
+          <LatestHistory serial={deviceId}/>
           <DeviceHistory serial={deviceId} />
           {detailInfo && <div className={classes.mapContainer}>
             <ShelterMap data={detailInfo} />
