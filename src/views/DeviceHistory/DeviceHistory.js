@@ -3,44 +3,44 @@ import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import SectionHeader from 'components/SectionHeader/SectionHeader';
 import { apiUrl } from 'views/Devices/data';
-import { setDeviceHistory } from 'store/actions/device';
+import { setDeviceHistory, setHistoryItems } from 'store/actions/device';
 import { useDispatch, useSelector } from 'react-redux';
-import { deviceHistory } from 'store/selectors/device';
+import { deviceHistory, historyItems } from 'store/selectors/device';
 import StatusChart from 'views/Devices/components/StatusChart/StatusChart';
 import useStoreState from 'assets/js/use-store-state';
 import { currentUser } from 'store/selectors/user';
 import { setCurrentUser } from 'store/actions/user';
 
-const dataTypes = {
-  title: 'Select Data Type',
-  options: [
-    {
-      id: 'power',
-      name: 'power',
-      title: 'power'
-    },
-    {
-      id: 'temperature',
-      name: 'temperature',
-      title: 'temperature'
-    },
-    {
-      id: 'light',
-      name: 'light',
-      title: 'light'
-    },
-    {
-      id: 'analog_1',
-      name: 'analog_1',
-      title: 'analog_1'
-    },
-    {
-      id: 'analog_2',
-      name: 'analog_2',
-      title: 'analog_2'
-    }
-  ]
-};
+// const dataTypes = {
+//   title: 'Select Data Type',
+//   options: [
+//     {
+//       id: 'power',
+//       name: 'power',
+//       title: 'power'
+//     },
+//     {
+//       id: 'temperature',
+//       name: 'temperature',
+//       title: 'temperature'
+//     },
+//     {
+//       id: 'light',
+//       name: 'light',
+//       title: 'light'
+//     },
+//     {
+//       id: 'analog_1',
+//       name: 'analog_1',
+//       title: 'analog_1'
+//     },
+//     {
+//       id: 'analog_2',
+//       name: 'analog_2',
+//       title: 'analog_2'
+//     }
+//   ]
+// };
 
 const histories =
   {
@@ -80,8 +80,9 @@ export default function DeviceHistory (props) {
 
   const [range, setRange] = useState('1d');
   const [user, setUser] = useStoreState(currentUser, setCurrentUser);
-  const [measureType, setMeasureType] = useState('power');
+  const [measureType, setMeasureType] = useState('');
   const [statusValue, setStatusValue] = useState({});
+  const [dataTypes, setDataTypes] = useStoreState(historyItems, setHistoryItems);
 
   useEffect(() => {
     setStatusValue({
@@ -129,7 +130,7 @@ export default function DeviceHistory (props) {
   return (
     <Box>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-        <SectionHeader title='' opval={measureType} setOpval={setMeasureType} optionInfo={dataTypes} />
+        {dataTypes.title ? <SectionHeader title='' opval={measureType} setOpval={setMeasureType} optionInfo={dataTypes} /> : ''}
         <SectionHeader title='' opval={range} setOpval={setRange} optionInfo={histories} />
       </Box>
       <StatusChart data={statusValue} statusTitle={measureType} />

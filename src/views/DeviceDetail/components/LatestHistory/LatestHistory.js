@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { apiUrl } from 'views/Devices/data';
 import useStoreState from 'assets/js/use-store-state';
-import { currentPos } from 'store/selectors/device';
 import { setCurrentUser } from 'store/actions/user';
 import Box from '@material-ui/core/Box';
 import moment from 'moment';
+import { currentUser } from 'store/selectors/user';
+import { historyItems } from 'store/selectors/device';
+import { setHistoryItems } from 'store/actions/device';
 
 export default function LatestHistory ({ serial }) {
 
-  const [user, setUser] = useStoreState(currentPos, setCurrentUser);
+  const [user, setUser] = useStoreState(currentUser, setCurrentUser);
   const [data, setData] = useState({});
   const [measure, setMeasure] = useState([]);
+  const [historyTypes, setHistoryTypes] = useStoreState(historyItems, setHistoryItems);
+
+  useEffect(() => {
+    const dataTypes = {
+      title: 'Select Data Type',
+      options: measure.map(function(element) {
+          return {
+            id: element,
+            name: element,
+            title: element
+          }
+        }
+      ),
+    };
+    setHistoryTypes(dataTypes);
+  }, [measure]);
 
   useEffect(() => {
     fetch(apiUrl, {

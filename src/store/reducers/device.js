@@ -29,7 +29,8 @@ const initState = {
   },
   historyData: [],
   currentPos: {},
-  submitted: false
+  submitted: false,
+  historyItems: {}
 };
 
 export default (state = initState, action) => {
@@ -42,6 +43,8 @@ export default (state = initState, action) => {
       return { ...state, deviceHistory: action.device };
     case DeviceActionTypes.SET_CURRENTPOS:
       return { ...state, currentPos: action.device };
+    case DeviceActionTypes.SET_HISTORY_ITEMS:
+      return { ...state, historyItems: action.device };
     default:
       return state;
   }
