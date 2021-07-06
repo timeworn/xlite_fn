@@ -47,7 +47,7 @@ const ConnectedDevice = props => {
         data: [statis.onlineDeviceCount, statis.offlineDeviceCount],
         backgroundColor: [
           '#1cc88a',
-          '#ad1818'
+          '#36b9cc'
         ],
         borderWidth: 1,
         borderColor: theme.palette.white,

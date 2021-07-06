@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Box from '@material-ui/core/Box';
 import { Grid } from '@material-ui/core';
-import { Devices, PhonelinkErase, PhonelinkRing } from '@material-ui/icons';
+import { Assignment, AttachMoney, CalendarToday } from '@material-ui/icons';
 
 import { ConnectedDevice, DeviceEvents, Summary } from './components';
 import SectionHeader from '../../components/SectionHeader/SectionHeader';
@@ -66,18 +66,18 @@ const Dashboard = () => {
   const data = [{
     title: 'TOTAL DEVICES',
     value: statis.totalDeviceCount,
-    Icon: Devices,
+    Icon: CalendarToday,
     color: '#4e73df'
   }, {
     title: 'ONLINE',
     value: statis.onlineDeviceCount,
-    Icon: PhonelinkRing,
+    Icon: AttachMoney,
     color: '#1cc88a'
   }, {
     title: 'OFFLINE',
     value: statis.offlineDeviceCount,
-    Icon: PhonelinkErase,
-    color: '#ad1818'
+    Icon: Assignment,
+    color: '#36b9cc'
   }];
 
   return (

@@ -223,20 +223,21 @@ const SignUp = props => {
                 className={classes.quoteText}
                 variant="h1"
               >
-                XLITE SMART LIGHTING
+                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
+                they sold out High Life.
               </Typography>
               <div className={classes.person}>
+                <Typography
+                  className={classes.name}
+                  variant="body1"
+                >
+                  Takamaru Ayako
+                </Typography>
                 <Typography
                   className={classes.bio}
                   variant="body2"
                 >
-                  Zigbee/LoRaWAN/NB-IoT
-                </Typography>
-                <Typography
-                  className={classes.name}
-                  variant="body2"
-                >
-                  XVISION Technology
+                  Manager at inVision
                 </Typography>
               </div>
             </div>

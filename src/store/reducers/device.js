@@ -25,9 +25,7 @@ const initState = {
     settings: '',
     status: '',
     temperature: '',
-    type: '',
-    manual_dim: 0,
-    thingname: ''
+    type: ''
   },
   historyData: [],
   currentPos: {},

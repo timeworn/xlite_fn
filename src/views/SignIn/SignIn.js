@@ -197,14 +197,15 @@ const SignIn = props => {
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
               <Typography className={classes.quoteText} variant="h1">
-                XLITE SMART LIGHTING
+                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
+                they sold out High Life.
               </Typography>
               <div className={classes.person}>
-                <Typography className={classes.bio} variant="body2">
-                  Zigbee/LoRaWAN/NB-IoT
-                </Typography>
                 <Typography className={classes.name} variant="body1">
-                  XVISION Technology
+                  Takamaru Ayako
+                </Typography>
+                <Typography className={classes.bio} variant="body2">
+                  Manager at inVision
                 </Typography>
               </div>
             </div>
@@ -273,6 +274,20 @@ const SignIn = props => {
                 >
                   Sign in now
                 </Button>
+                <Typography
+                  color="textSecondary"
+                  variant="body1"
+                >
+                  Don't have an account?{' '}
+                  <Link
+                    component={RouterLink}
+                    to="/sign-up"
+                    variant="h6"
+                    color="secondary"
+                  >
+                    Sign up
+                  </Link>
+                </Typography>
               </form>
             </div>
           </div>

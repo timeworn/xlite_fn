@@ -7,7 +7,7 @@ const StatusChart = props => {
   return (
     <div>
       <Line
-        height={80}
+        height={100}
         data={data}
         options={{
           title:{
@@ -18,17 +18,6 @@ const StatusChart = props => {
           legend:{
             display:false,
             position:'right'
-          },
-          scales: {
-            xAxes: [{
-              type: 'time',
-            }],
-            yAxes:[{
-              ticks: {
-                beginAtZero: true,
-                min: 0
-              },
-            }]
           }
         }}
       />

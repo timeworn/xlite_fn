@@ -31,7 +31,7 @@ export default function ScheduleDate (props) {
   const [currentData, setCurrentData] = useState({});
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState('08:00');
-  const [dimValue, setDimValue] = useState(0);
+  const [dimValue, setDimValue] = useState(20);
 
   useEffect(() => {
     setCurrentData(data);

@@ -259,7 +259,7 @@ const Reports = () => {
                   color="secondary"
                 />
               }
-              label="Only show warning?"
+              label="only show warning?"
               className={classes.Checkwarning}
             />
           </Grid>

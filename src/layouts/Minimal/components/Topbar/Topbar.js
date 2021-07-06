@@ -14,13 +14,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   logoImg: {
-    width: theme.spacing(16),
+    width: theme.spacing(8),
     height: theme.spacing(6),
     marginRight: theme.spacing(2),
     background: 'transparent'
   },
   title: {
-    color: 'white'
+    color: '#93949'
   }
 }));
 
@@ -40,7 +40,7 @@ const Topbar = props => {
         <RouterLink to="/">
           <div className={classes.logo}>
             <img alt="Logo" src="/images/logos/logo.png" width="100px" />
-            <h1 className={classes.title}></h1>
+            <h1 className={classes.title}>Brand</h1>
           </div>
         </RouterLink>
       </Toolbar>

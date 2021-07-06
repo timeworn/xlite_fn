@@ -68,7 +68,7 @@ export default function DeviceEnvironment (props) {
   const handleSliderChange = (e, newValue) => {
     dispatch(setSelectedDevice({
       ...deviceInfo,
-      manual_dim: newValue
+      current_dim: newValue
     }));
   };
 
@@ -80,15 +80,15 @@ export default function DeviceEnvironment (props) {
   };
 
   const handleBlur = () => {
-    if (deviceInfo.manual_dim < 0) {
+    if (deviceInfo.current_dim < 0) {
       dispatch(setSelectedDevice({
         ...deviceInfo,
-        manual_dim: 0
+        current_dim: 0
       }));
-    } else if (deviceInfo.manual_dim > 100) {
+    } else if (deviceInfo.current_dim > 100) {
       dispatch(setSelectedDevice({
         ...deviceInfo,
-        manual_dim: 100
+        current_dim: 100
       }));
     }
   };
@@ -159,12 +159,12 @@ export default function DeviceEnvironment (props) {
           {deviceInfo &&
           <Grid item xs>
             <Slider
-              name="manual_dim"
+              name="current_dim"
               step={10}
               onChange={handleSliderChange}
               aria-labelledby="input-slider"
               color="secondary"
-              value={typeof deviceInfo.manual_dim === 'number' ? deviceInfo.manual_dim : 0}
+              value={typeof deviceInfo.current_dim === 'number' ? deviceInfo.current_dim : 0}
             />
           </Grid>
           }
@@ -172,8 +172,8 @@ export default function DeviceEnvironment (props) {
           <Grid item>
             <Input
               className={classes.input}
-              value={deviceInfo.manual_dim}
-              name="manual_dim"
+              value={deviceInfo.current_dim}
+              name="current_dim"
               margin="dense"
               onChange={handleInputChange}
               onBlur={handleBlur}
@@ -189,7 +189,23 @@ export default function DeviceEnvironment (props) {
           }
         </Grid>
       </Box>
-
+      <Box color={'white'}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            On/Off
+          </Grid>
+          <Grid item>
+            {deviceInfo &&
+            <Switch
+              checked={statusValue}
+              onChange={handleOnOffChange}
+              name="status"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+            }
+          </Grid>
+        </Grid>
+      </Box>
       <Box mt={'30px'} display={'flex'} justifyContent={'space-between'}>
         <Button
           color="primary"

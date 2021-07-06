@@ -8,11 +8,11 @@ import { setCurrentPos } from 'store/actions/device';
 import { v1 as uuIdv1 } from "uuid";
 
 const icon = {
-  url: '/images/blue_dot.png'
+  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'
 };
 
 const icon1 = {
-  url: 'https://maps.google.com/mapfiles/ms/micons/ylw-pushpin.png'
+  url: 'http://maps.google.com/mapfiles/ms/micons/ylw-pushpin.png'
 }
 
 export function transform (position) {
@@ -22,34 +22,23 @@ export function transform (position) {
 const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
   const dispatch = useDispatch();
   const [lastPos, setLastPos] = useState({
-    lat: 10.766048,
-    lng: 106.627815
+    lat: -33.921,
+    lng: 151.209
   });
   const [curPos, setCurPos] = useState({
     lat: null,
     lng: null
   });
-  useEffect(() => {
-    if (props.markers.length) {
-      setLastPos({
-        lat: transform(props.markers[props.markers.length - 1].latitude),
-        lng: transform(props.markers[props.markers.length - 1].longitude)
-      });
-    }
-  }, [props]);
 
-  const mapOptions = {
-    styles: [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative.country","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#868686"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#c3c2c2"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#c0c0c0"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#b5b4b4"}]}]
-  };
   useEffect(() => {
     dispatch(setCurrentPos(curPos));
   }, [curPos]);
 
   return (
-    <GoogleMap defaultZoom={12} options={mapOptions}  onClick={e => setCurPos({
+    <GoogleMap defaultZoom={8} center={lastPos} onClick={e => setCurPos({
       lat: e.latLng.lat(),
       lng: e.latLng.lng()
-    })} center={lastPos}>
+    })}>
       {curPos && curPos.lat ? <Marker
         key={uuIdv1()}
         position={{ lat: curPos.lat, lng: transform(curPos.lng) }}

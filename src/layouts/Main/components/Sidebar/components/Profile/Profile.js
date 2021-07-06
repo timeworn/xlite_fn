@@ -29,13 +29,17 @@ const Profile = props => {
   const { className, ...rest } = props;
 
   const [user, setUser] = useStoreState(currentUser, setCurrentUser);
+  const [avatarSrc, setAvatarSrc] = useState('');
 
   useEffect(() => {
     AuthService.instance.getProfile().then(user => setUser(user));
   }, []);
 
-  const avatarSrc = 'https://avatars.dicebear.com/api/avataaars/' + user.email + '.svg?options[top][]=shortHair&options[accessoriesChance]=93&options[eyes][]=happy&options[mouth][]=twinkle';
   const classes = useStyles();
+
+  useEffect(() => {
+    setAvatarSrc('https://i.pravatar.cc/150?u=' + user.email);
+  }, [user.email]);
 
   return (
     <div
@@ -55,7 +59,7 @@ const Profile = props => {
       >
         {user.name}
       </Typography>
-      <Typography variant="body2">Management</Typography>
+      <Typography variant="body2">Brain Director</Typography>
     </div>
   );
 };
