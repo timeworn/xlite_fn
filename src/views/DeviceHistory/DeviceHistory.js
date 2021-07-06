@@ -11,6 +11,7 @@ import useStoreState from 'assets/js/use-store-state';
 import { currentUser } from 'store/selectors/user';
 import { setCurrentUser } from 'store/actions/user';
 
+
 // const dataTypes = {
 //   title: 'Select Data Type',
 //   options: [
@@ -42,27 +43,38 @@ import { setCurrentUser } from 'store/actions/user';
 //   ]
 // };
 
+
 const histories =
   {
     title: 'Quick history',
     options: [
       {
         id: 'history1',
+        name: '6h',
+        title: '6hour'
+      },
+      {
+        id: 'history2',
+        name: '12h',
+        title: '12hours'
+      },
+      {
+        id: 'history3',
         name: '1d',
         title: '1day'
       },
       {
-        id: 'history2',
+        id: 'history4',
         name: '7d',
         title: '7days'
       },
       {
-        id: 'history3',
+        id: 'history5',
         name: '14d',
         title: '14days'
       },
       {
-        id: 'history4',
+        id: 'history6',
         name: '30d',
         title: '30days'
       }
@@ -82,22 +94,69 @@ export default function DeviceHistory (props) {
   const [user, setUser] = useStoreState(currentUser, setCurrentUser);
   const [measureType, setMeasureType] = useState('');
   const [statusValue, setStatusValue] = useState({});
+
   const [dataTypes, setDataTypes] = useStoreState(historyItems, setHistoryItems);
+
+  
+  let interval = '';
+
+  switch (range) {
+
+    case '6h':
+      interval = '1m';
+      break;
+
+    case '12h':
+      interval = '2m';
+      break;
+
+    case '1d':
+      interval = '5m';
+      break;
+    case '7d':
+      interval = '30m';
+      break;
+    case '14d':
+      interval = '1h';
+      break;
+    case '30d':
+      interval = '2h';
+      break;
+
+    default:
+      interval = '2h';
+  }
+  
+  const options = {
+    month: 'numeric', day: 'numeric',
+    hour: 'numeric', minute: 'numeric', 
+    hour12: false
+  };
+
+  let chart_color = '#6387bf';
+
 
   useEffect(() => {
     setStatusValue({
-      labels: historyData && historyData.map(history =>
-        history.timestamp.substring(history.timestamp.length - 15, history.timestamp.length - 4)
-      ),
+      labels: historyData && historyData.map(history =>  new Date(history.timestamp).getTime()),
+      //labels: historyData && historyData.map(history =>  history.timestamp),
       datasets: [
         {
-          label: measureType,
-          fill: false,
+          label: dataTypes.options.find(o=>o.name === measureType).title,
+          fill: true,
           lineTension: 0.1,
-          backgroundColor: '#3f51b5',
-          borderColor: 'grey',
-          borderWidth: 1,
-          data: historyData && historyData.map(history => history['sensor'][measureType])
+          backgroundColor: 'rgba(32, 48, 74,0.5)',
+          borderColor: chart_color,
+          pointBorderColor: chart_color,
+          pointBackgroundColor: chart_color,
+          pointHoverBackgroundColor: '#005ceb',
+          pointHoverBorderColor: '#005ceb',
+          pointHoverBorderWidth: 3,
+          pointRadius: 0,
+          pointHitRadius: 10,
+          borderWidth:2,
+          pointBorderWidth:1,
+          data: historyData && historyData.map(history => history.sensor['sensor'][measureType])
         }
       ]
     });
@@ -112,7 +171,7 @@ export default function DeviceHistory (props) {
             dev_serial: serial,
             time_from: 'now-' + range,
             time_to: 'now',
-            interval: '2h'
+            interval: interval
           },
           api_Key: user.apiKey ? user.apiKey : ''
         }
@@ -133,7 +192,7 @@ export default function DeviceHistory (props) {
         {dataTypes.title ? <SectionHeader title='' opval={measureType} setOpval={setMeasureType} optionInfo={dataTypes} /> : ''}
         <SectionHeader title='' opval={range} setOpval={setRange} optionInfo={histories} />
       </Box>
-      <StatusChart data={statusValue} statusTitle={measureType} />
+      <StatusChart data={statusValue} statusTitle={dataTypes.options.find(o=>o.name === measureType).title} />
     </Box>
   );
 }
